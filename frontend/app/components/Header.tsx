@@ -5,13 +5,20 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <Flex
-        justifyContent="space-between"
-        alignItems="center"
-        p="2rem"
+    <Flex 
+    as="nav" 
+    align="start" 
+    justify="space-between" 
+    padding="1.5rem" 
+    bg="#1F2041" 
+    color="white"
     >
-        <Text>Logo</Text>
+        <Text fontSize="25" fontWeight="bold">
+          Voting Dapp
+        </Text>
+
         <ConnectButton />
+
     </Flex>
   )
 }

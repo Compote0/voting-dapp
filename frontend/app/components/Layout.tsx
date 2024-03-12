@@ -1,6 +1,7 @@
 "use client"
 import Header from './Header'
 import Footer from './Footer'
+import Workflow from '../components/Workflow'
 import { Flex } from '@chakra-ui/react'
 import React from 'react'
 
@@ -12,13 +13,18 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <Flex
       direction="column"
-      h="100vh"
-      justifyContent="center"
+      justifyContent="space-between"
+      minHeight="80vh"
+      alignItems="stretch"
+      bg="#4B3F72"
     >
         <Header />
+        <Workflow />
         <Flex
           grow="1"
           p="2rem"
+          direction="column" 
+          flex="1" 
         >
             {children}
         </Flex>

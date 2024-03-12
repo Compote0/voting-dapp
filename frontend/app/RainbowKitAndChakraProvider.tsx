@@ -34,7 +34,15 @@ const RainbowKitAndChakraProvider = ({ children }: RainbowKitAndChakraProviderPr
     <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
             <RainbowKitProvider>
-                <ChakraProvider>
+                <ChakraProvider toastOptions={{ 
+                      defaultOptions: { 
+                        duration: 6000, 
+                        isClosable: true, 
+                        position: "bottom"
+                      } 
+                    }}
+                    
+                  >
                     {children}
                 </ChakraProvider>
             </RainbowKitProvider>
