@@ -1,13 +1,31 @@
-# Sample Hardhat Project
+# Voting contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+We use solidity 0.8.20 compiler version.
 
-Try running some of the following tasks:
-
+## install hardhat
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+yarn
+```
+
+## libraries used
+If you need to re-install libraries used
+```shell
+yarn add --dev "hardhat@^2.14.0" "@nomicfoundation/hardhat-toolbox@^3.0.0" "@nomicfoundation/hardhat-network-helpers@^1.0.0" "@nomicfoundation/hardhat-chai-matchers@^2.0.0" "@nomicfoundation/hardhat-ethers@^3.0.0" "@nomicfoundation/hardhat-verify@^1.0.0" "chai@^4.2.0" "ethers@^6.4.0" "hardhat-gas-reporter@^1.0.8" "solidity-coverage@^0.8.0" "@typechain/hardhat@^8.0.0" "typechain@^8.1.0" "@typechain/ethers-v6@^0.4.0"
+
+yarn add --dev @openzeppelin/contracts
+```
+
+## compile contract
+```shell
+yarn hardhat compile
+```
+
+## test contract
+```shell
+yarn hardhat test
+```
+
+## run local blockchain
+```shell
+yarn hardhat node
 ```

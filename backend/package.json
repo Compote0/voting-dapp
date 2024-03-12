@@ -1,29 +1,31 @@
 {
-  "name": "hardhat",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
-    "@nomicfoundation/hardhat-toolbox-viem": "^2.0.0",
-    "@nomicfoundation/hardhat-verify": "^2.0.0",
-    "@nomicfoundation/hardhat-viem": "^1.0.0",
-    "@types/chai": "^4.2.0",
-    "@types/chai-as-promised": "^7.1.6",
-    "@types/mocha": ">=9.1.0",
-    "@types/node": ">=18.0.0",
-    "chai": "^4.2.0",
-    "hardhat": "^2.21.0",
-    "hardhat-gas-reporter": "^1.0.8",
-    "solidity-coverage": "^0.8.0",
-    "ts-node": ">=8.0.0",
-    "typescript": "~5.0.4",
-    "viem": "^1.15.1"
-  },
-  "dependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "dotenv": "^16.4.5",
-    "ethers": "^6.11.1"
-  }
+	"name": "hardhat",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"dependencies": {
+		"@openzeppelin/contracts": "^5.0.2",
+		"@openzeppelin/merkle-tree": "^1.0.6",
+		"dotenv": "^16.4.5",
+		"hardhat": "^2.20.1"
+	},
+	"devDependencies": {
+		"@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+		"@nomicfoundation/hardhat-ethers": "^3.0.0",
+		"@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+		"@nomicfoundation/hardhat-toolbox": "^4.0.0",
+		"@nomicfoundation/hardhat-verify": "^2.0.0",
+		"@typechain/ethers-v6": "^0.5.0",
+		"@typechain/hardhat": "^9.0.0",
+		"@types/chai": "^4.2.0",
+		"@types/mocha": ">=9.1.0",
+		"@types/node": ">=16.0.0",
+		"chai": "^4.2.0",
+		"ethers": "^6.4.0",
+		"hardhat-gas-reporter": "^1.0.8",
+		"solidity-coverage": "^0.8.0",
+		"ts-node": ">=8.0.0",
+		"typechain": "^8.3.0",
+		"typescript": ">=4.5.0"
+	}
 }
