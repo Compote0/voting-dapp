@@ -54,7 +54,7 @@ export default function Home() {
   if (!isConnected) return <Flex align="center" justify="center" minH="100vh" maxH="100vh" overflow="hidden"><NotConnected /></Flex>;
 
   const isAdmin = address && checkIfAdmin(address);
-  if (isAdmin) return <Flex align="center" justify="center" minH="100vh" maxH="100vh" overflow="hidden"><AdminVoting /></Flex>;
+  if (isAdmin) return <Flex align="center" justify="center" minH="100vh" maxH="100vh" overflow="hidden"></Flex>;
 
   if (!isWalletAuthorized) return <Flex align="center" justify="center" minH="100vh" maxH="100vh" overflow="hidden"><NotAuthorized /></Flex>;
 
