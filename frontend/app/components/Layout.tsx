@@ -10,6 +10,8 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const hasMounted = true; 
+  const connectedWallet = { address: '0x...' };
   return (
     <Flex
       direction="column"
@@ -19,7 +21,7 @@ const Layout = ({ children }: LayoutProps) => {
       bg="#4B3F72"
     >
         <Header />
-        <Workflow />
+        <Workflow hasMounted={hasMounted} connectedWallet={connectedWallet} />
         <Flex
           grow="1"
           p="2rem"
