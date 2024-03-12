@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import WorkflowStatus from "../types/status-workflow";
 import {
+  Step,
+  StepIcon,
+  StepIndicator,
+  StepNumber,
+  StepSeparator,
+  StepStatus,
+  StepTitle,
+  Stepper,
   Box,
-  VStack,
-  HStack,
-  Icon,
-  Text,
 } from '@chakra-ui/react';
-import { CheckCircleIcon, TimeIcon } from '@chakra-ui/icons';
 
 interface WorkflowProps {
   hasMounted: boolean;
@@ -17,44 +20,46 @@ interface WorkflowProps {
 }
 
 const WORKFLOWS = Object.entries(WorkflowStatus)
-  .filter(([key, value]) => typeof value === 'number') 
-  .map(([key, value]) => ({
-    status: value,
+  .filter(([_, value]) => typeof value === 'number')
+  .map(([key, _]) => ({
     title: key
-      .split(/(?=[A-Z])/)
-      .join(' ')
+      .replace(/([A-Z])/g, ' $1') 
+      .trim()
       .replace('Ended', ' Ended'),
   }));
 
-
-const Workflow: React.FC<WorkflowProps> = ({ hasMounted, connectedWallet }) => {
-  const [currentStatus, setCurrentStatus] = useState<WorkflowStatus | null>(null);
+const Workflow = ({ hasMounted, connectedWallet }:WorkflowProps) => {
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
-    setCurrentStatus(WorkflowStatus.VotingSessionStarted); 
+    const currentStatusIndex = Object.values(WorkflowStatus).indexOf(WorkflowStatus.VotingSessionStarted);
+    setActiveStep(currentStatusIndex >= 0 ? currentStatusIndex : 0);
   }, [connectedWallet]); 
 
   if (!hasMounted || !connectedWallet?.address) {
     return null;
   }
 
-  const currentStepIndex = WORKFLOWS.findIndex(wf => wf.status === currentStatus);
+
 
   return (
-    <VStack spacing={4} align="stretch">
-      {WORKFLOWS.map((workflow, index) => {
-        const isActive = index === currentStepIndex;
-        const isCompleted = index < currentStepIndex;
-        return (
-          <HStack key={workflow.status} spacing={4}>
-            <Icon as={isCompleted ? CheckCircleIcon : TimeIcon} color={isCompleted ? 'green.500' : 'gray.500'} />
-            <Text fontWeight={isActive ? 'bold' : 'normal'} color={isActive ? 'blue.500' : 'gray.700'}>
-              {workflow.title}
-            </Text>
-          </HStack>
-        );
-      })}
-    </VStack>
+    <Stepper p="2rem" colorScheme="#417B5A" index={activeStep}>
+      {WORKFLOWS.map((workflow, index) => (
+        <Step key={index}>
+          <StepIndicator>
+            <StepStatus
+              complete={<Box color="#417B5A"><StepIcon /></Box>}
+              incomplete={<Box color="#417B5A"><StepNumber>{index + 1}</StepNumber></Box>}
+              active={<Box color="#417B5A"><StepNumber>{index + 1}</StepNumber></Box>}
+            />
+          </StepIndicator>
+          <Box flexShrink="0" color="#D0CEBA">
+            <StepTitle>{workflow.title}</StepTitle>
+          </Box>
+          <StepSeparator />
+        </Step>
+      ))}
+    </Stepper>
   );
 };
 
