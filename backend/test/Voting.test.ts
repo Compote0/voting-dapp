@@ -21,14 +21,10 @@ describe("Voting Tests", function () {
 			assert.equal(owner.address, theOwner);
 		});
 		it("should be in RegisteringVoters workflow status", async function () {
-			let workflow = await voting.workflowStatus();
-
-			assert.equal(workflow, 0);
+			assert.equal(await voting.workflowStatus(), 0);
 		});
 		it("should be winningProposalID with default value 0", async function () {
-			let winningProposalID = await voting.winningProposalID();
-
-			expect(winningProposalID).to.equal(0);
+			expect(await voting.winningProposalID()).to.equal(0);
 		});
 	});
 
@@ -243,7 +239,7 @@ describe("Voting Tests", function () {
 				assert.equal(hasVoted, true);
 				assert.equal(votedProposalId, 1);
 
-				let [description, voteCount] = await voting
+				const [description, voteCount] = await voting
 					.connect(addr1)
 					.getOneProposal(1);
 				assert.equal(description, "My first proposal");
@@ -255,83 +251,110 @@ describe("Voting Tests", function () {
 	describe("state", function () {
 		describe("state onlyOwner", function () {
 			it("should revert when not owner to startProposalsRegistering", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(addr1).startProposalsRegistering())
 					.to.be.revertedWithCustomError(voting, "OwnableUnauthorizedAccount")
 					.withArgs(addr1.address);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 			it("should revert when not owner to endProposalsRegistering", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(addr1).endProposalsRegistering())
 					.to.be.revertedWithCustomError(voting, "OwnableUnauthorizedAccount")
 					.withArgs(addr1.address);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 			it("should revert when not owner to startVotingSession", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(addr1).startVotingSession())
 					.to.be.revertedWithCustomError(voting, "OwnableUnauthorizedAccount")
 					.withArgs(addr1.address);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 			it("should revert when not owner to endVotingSession", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(addr1).endVotingSession())
 					.to.be.revertedWithCustomError(voting, "OwnableUnauthorizedAccount")
 					.withArgs(addr1.address);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 			it("should revert when not owner to tallyVotes", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(addr1).tallyVotes())
 					.to.be.revertedWithCustomError(voting, "OwnableUnauthorizedAccount")
 					.withArgs(addr1.address);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 		});
 
 		describe("state wrong order", function () {
 			it("should revert when not good workflow status required to startProposalsRegistering", async function () {
 				await voting.connect(owner).startProposalsRegistering();
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(1);
 				await expect(
 					voting.connect(owner).startProposalsRegistering()
 				).to.revertedWith("Registering proposals cant be started now");
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(1);
 			});
 			it("should revert when not good workflow status required to endProposalsRegistering", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(
 					voting.connect(owner).endProposalsRegistering()
 				).to.revertedWith("Registering proposals havent started yet");
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 			it("should revert when not good workflow status required to startVotingSession", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(
 					voting.connect(owner).startVotingSession()
 				).to.revertedWith("Registering proposals phase is not finished");
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 			it("should revert when not good workflow status required to endVotingSession", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(owner).endVotingSession()).to.revertedWith(
 					"Voting session havent started yet"
 				);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 			it("should revert when not good workflow status required to tallyVotes", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(owner).tallyVotes()).to.revertedWith(
 					"Current status is not voting session ended"
 				);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 			});
 		});
 
 		describe("state good order", function () {
 			it("should workflow status change to ProposalsRegistrationStarted", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await expect(voting.connect(owner).startProposalsRegistering())
 					.to.emit(voting, "WorkflowStatusChange")
 					.withArgs(0, 1);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(1);
 			});
 			it("should workflow status change to ProposalsRegistrationEnded", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await voting.connect(owner).startProposalsRegistering();
 
 				await expect(voting.connect(owner).endProposalsRegistering())
 					.to.emit(voting, "WorkflowStatusChange")
 					.withArgs(1, 2);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(2);
 			});
 			it("should workflow status change to VotingSessionStarted", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await voting.connect(owner).startProposalsRegistering();
 				await voting.connect(owner).endProposalsRegistering();
 
 				await expect(voting.connect(owner).startVotingSession())
 					.to.emit(voting, "WorkflowStatusChange")
 					.withArgs(2, 3);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(3);
 			});
 			it("should workflow status change to VotingSessionEnded", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await voting.connect(owner).startProposalsRegistering();
 				await voting.connect(owner).endProposalsRegistering();
 				await voting.connect(owner).startVotingSession();
@@ -339,8 +362,10 @@ describe("Voting Tests", function () {
 				await expect(voting.connect(owner).endVotingSession())
 					.to.emit(voting, "WorkflowStatusChange")
 					.withArgs(3, 4);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(4);
 			});
 			it("should workflow status change to VotesTallied", async function () {
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(0);
 				await voting.connect(owner).startProposalsRegistering();
 				await voting.connect(owner).endProposalsRegistering();
 				await voting.connect(owner).startVotingSession();
@@ -349,6 +374,7 @@ describe("Voting Tests", function () {
 				await expect(voting.connect(owner).tallyVotes())
 					.to.emit(voting, "WorkflowStatusChange")
 					.withArgs(4, 5);
+				expect(await voting.connect(addr1).workflowStatus()).to.equal(5);
 			});
 		});
 	});
@@ -366,7 +392,7 @@ describe("Voting Tests", function () {
 			await voting.connect(owner).endVotingSession();
 			await voting.connect(owner).tallyVotes();
 
-			let winningProposalID = await voting.connect(owner).winningProposalID();
+			const winningProposalID = await voting.connect(owner).winningProposalID();
 			assert.equal(winningProposalID, 0);
 
 			const [description, voteCount] = await voting
@@ -383,7 +409,7 @@ describe("Voting Tests", function () {
 			await voting.connect(owner).endVotingSession();
 			await voting.connect(owner).tallyVotes();
 
-			let winningProposalID = await voting.connect(owner).winningProposalID();
+			const winningProposalID = await voting.connect(owner).winningProposalID();
 			assert.equal(winningProposalID, 0);
 
 			const [description, voteCount] = await voting
@@ -401,7 +427,7 @@ describe("Voting Tests", function () {
 			await voting.connect(owner).endVotingSession();
 			await voting.connect(owner).tallyVotes();
 
-			let winningProposalID = await voting.connect(owner).winningProposalID();
+			const winningProposalID = await voting.connect(owner).winningProposalID();
 			assert.equal(winningProposalID, 0);
 
 			let [description, voteCount] = await voting
@@ -409,6 +435,7 @@ describe("Voting Tests", function () {
 				.getOneProposal(0);
 			assert.equal(description, "GENESIS");
 			assert.equal(voteCount, 1);
+
 			[description, voteCount] = await voting.connect(addr1).getOneProposal(1);
 			assert.equal(description, "My first proposal");
 			assert.equal(voteCount, 1);
@@ -422,7 +449,7 @@ describe("Voting Tests", function () {
 			await voting.connect(owner).endVotingSession();
 			await voting.connect(owner).tallyVotes();
 
-			let winningProposalID = await voting.connect(owner).winningProposalID();
+			const winningProposalID = await voting.connect(owner).winningProposalID();
 			assert.equal(winningProposalID, 1);
 
 			let [description, voteCount] = await voting
@@ -430,6 +457,7 @@ describe("Voting Tests", function () {
 				.getOneProposal(0);
 			assert.equal(description, "GENESIS");
 			assert.equal(voteCount, 0);
+
 			[description, voteCount] = await voting.connect(addr1).getOneProposal(1);
 			assert.equal(description, "My first proposal");
 			assert.equal(voteCount, 2);
@@ -450,7 +478,7 @@ describe("Voting Tests", function () {
 				expect.fail(
 					"Expected an exception for sending Ether to a non-payable contract"
 				);
-			} catch (error) {
+			} catch (error: any) {
 				// Check if the error message or type is as expected
 				expect(error.message).to.contain("non-payable");
 			}
