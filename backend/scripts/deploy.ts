@@ -5,7 +5,6 @@ async function main() {
 
 	await voting.waitForDeployment();
 	console.log(`Voting contract deployed to ${voting.target}`);
-
 }
 
 main().catch((error) => {

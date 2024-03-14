@@ -2,6 +2,14 @@
 
 We use solidity 0.8.20 compiler version.
 
+## setup environment variable
+
+You need to have a .env file with the following properties
+
+- PRIVATE_KEY
+- SEPOLIA_RPC_URL
+- ETHERSCAN_API_KEY
+
 ## install hardhat
 
 ```shell
@@ -34,6 +42,14 @@ yarn hardhat test
 
 ```shell
 yarn hardhat node
+```
+
+### deploy contract
+
+```shell
+yarn hardhat run ./scripts/deploy.ts --network localhost
+
+yarn hardhat run ./scripts/deploy.ts --network sepolia
 ```
 
 ## Test coverage
