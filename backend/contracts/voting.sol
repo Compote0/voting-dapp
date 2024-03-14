@@ -31,6 +31,7 @@ contract Voting is Ownable {
 
     WorkflowStatus public workflowStatus;
     Proposal[] proposalsArray;
+    uint maxProposal = 5;
     mapping (address => Voter) voters;
 
 
@@ -76,6 +77,7 @@ contract Voting is Ownable {
         require(workflowStatus == WorkflowStatus.ProposalsRegistrationStarted, 'Proposals are not allowed yet');
         require(keccak256(abi.encode(_desc)) != keccak256(abi.encode("")), 'Vous ne pouvez pas ne rien proposer'); // facultatif
         // voir que desc est different des autres
+        require(proposalsArray.length < maxProposal, 'Maximum proposals slot reached');
 
         Proposal memory proposal;
         proposal.description = _desc;

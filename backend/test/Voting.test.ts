@@ -76,15 +76,6 @@ describe("Voting Tests", function () {
 				assert.equal(description, "GENESIS");
 				assert.equal(voteCount, 0);
 			});
-			/*no boundary check regarding the proposal tab length when using getOneProposal function, so this function trigger an error that is not correctly caught in the code to revert it.
-```Error: VM Exception while processing transaction: reverted with panic code 0x32 (Array accessed at an out-of-bounds or negative index)```*/
-			// it.skip('should return an exception when get a proposal out of bound', async function() {
-			//   await voting.connect(owner).addVoter(addr1);
-			//   await voting.connect(owner).startProposalsRegistering();
-
-			//   await expect(await voting.connect(addr1).getOneProposal(1));
-			//   // add index check in proposal array
-			// })
 			it("should return a first proposal", async function () {
 				await voting.connect(owner).addVoter(addr1);
 				await voting.connect(owner).startProposalsRegistering();
@@ -124,6 +115,14 @@ describe("Voting Tests", function () {
 				await expect(voting.connect(owner).addVoter(addr1))
 					.to.emit(voting, "VoterRegistered")
 					.withArgs(addr1.address);
+
+				const [isRegistered, hasVoted, votedProposalId] = await voting
+					.connect(addr1)
+					.getVoter(addr1);
+
+				assert.equal(isRegistered, true);
+				assert.equal(hasVoted, false);
+				assert.equal(votedProposalId, 0);
 			});
 		});
 
@@ -147,6 +146,18 @@ describe("Voting Tests", function () {
 				await expect(voting.connect(addr1).addProposal("")).to.be.revertedWith(
 					"Vous ne pouvez pas ne rien proposer"
 				);
+			});
+			it("should revert when adding a 5th proposal", async function () {
+				await voting.connect(owner).addVoter(addr1);
+				await voting.connect(owner).startProposalsRegistering();
+
+				await voting.connect(addr1).addProposal("My first proposal");
+				await voting.connect(addr1).addProposal("My second proposal");
+				await voting.connect(addr1).addProposal("My thrid proposal");
+				await voting.connect(addr1).addProposal("My fourth proposal");
+				await expect(
+					voting.connect(addr1).addProposal("My fifth proposal")
+				).to.be.revertedWith("Maximum proposals slot reached");
 			});
 			it("should register proposal", async function () {
 				await voting.connect(owner).addVoter(addr1);
@@ -174,13 +185,34 @@ describe("Voting Tests", function () {
 			it("should revert when voter has already voted", async function () {
 				await voting.connect(owner).addVoter(addr1);
 				await voting.connect(owner).startProposalsRegistering();
+				await voting.connect(addr1).addProposal("My first proposal");
 				await voting.connect(owner).endProposalsRegistering();
 				await voting.connect(owner).startVotingSession();
-				await voting.connect(addr1).setVote(0);
+				await voting.connect(addr1).setVote(1);
+
+				const [isRegistered, hasVoted, votedProposalId] = await voting
+					.connect(addr1)
+					.getVoter(addr1);
+
+				assert.equal(isRegistered, true);
+				assert.equal(hasVoted, true);
+				assert.equal(votedProposalId, 1);
+
+				let [description, voteCount] = await voting
+					.connect(addr1)
+					.getOneProposal(1);
+				assert.equal(description, "My first proposal");
+				assert.equal(voteCount, 1);
 
 				await expect(voting.connect(addr1).setVote(0)).to.be.revertedWith(
 					"You have already voted"
 				);
+
+				[description, voteCount] = await voting
+					.connect(addr1)
+					.getOneProposal(1);
+				assert.equal(description, "My first proposal");
+				assert.equal(voteCount, 1);
 			});
 			it("should revert when voter vote for a proposal that does not exist", async function () {
 				await voting.connect(owner).addVoter(addr1);
@@ -202,6 +234,20 @@ describe("Voting Tests", function () {
 				await expect(voting.connect(addr1).setVote(1))
 					.to.emit(voting, "Voted")
 					.withArgs(addr1.address, 1);
+
+				const [isRegistered, hasVoted, votedProposalId] = await voting
+					.connect(addr1)
+					.getVoter(addr1);
+
+				assert.equal(isRegistered, true);
+				assert.equal(hasVoted, true);
+				assert.equal(votedProposalId, 1);
+
+				let [description, voteCount] = await voting
+					.connect(addr1)
+					.getOneProposal(1);
+				assert.equal(description, "My first proposal");
+				assert.equal(voteCount, 1);
 			});
 		});
 	});
