@@ -1,10 +1,18 @@
-import React from'react';
-import {Box, Button, Heading} from '@chakra-ui/react';
+import { Heading, Text } from '@chakra-ui/react';
+import { useGlobalContext } from '../context/store';
 
 export const RegisterVoter = () => {
-	return (
-		<Box>
-			<Heading>Register Voter</Heading>
-		</Box>
-    );
+  const { isOwner } = useGlobalContext();
+
+  return (
+    <>
+      <Heading>Register Voter</Heading>
+      {isOwner ? (
+        <Text>Please proceed to voter registration</Text>
+        /* TODO: input for voter address and submit button to trigger addVoter function of the contract */
+      ) : (
+        <Text>The owner is currently in the process of registering voters</Text>
+      )}
+    </>
+  );
 };

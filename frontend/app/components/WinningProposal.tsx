@@ -1,11 +1,12 @@
-import { Flex, Heading } from "@chakra-ui/react";
-import React from "react";
-
+import { Heading, Text } from "@chakra-ui/react";
 
 export const WinningProposal = () => {
 	return (
-		<Flex>
-		</Flex>
+		<>
+			<Heading>The winner is 🥁</Heading>
+			{/* read the winningProposalID property of the voting contract */}
+			<Text>The proposal number X</Text>
+		</>
 	);
 };
 

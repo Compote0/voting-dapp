@@ -238,6 +238,13 @@ export const contractAbi = [
 		type: "function",
 	},
 	{
+		inputs: [],
+		name: "reset",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
+	},
+	{
 		inputs: [
 			{
 				internalType: "uint256",

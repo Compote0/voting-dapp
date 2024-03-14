@@ -1,5 +1,5 @@
 'use client';
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
 import '@rainbow-me/rainbowkit/styles.css';
 
 import {
@@ -50,7 +50,7 @@ const RainbowKitAndChakraProvider = ({ children }: RainbowKitAndChakraProviderPr
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
-  )
-}
+  );
+};
 
-export default RainbowKitAndChakraProvider
+export default RainbowKitAndChakraProvider;

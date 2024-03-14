@@ -1,7 +1,6 @@
 "use client";
 import { ReactNode, createContext, useContext } from "react";
 import { contractAddress, contractAbi } from "@/app/constants";
-// import { parseAbiItem, formatEther } from "viem";
 import { useReadContract, useAccount } from "wagmi";
 // import { publicClient } from "@/utils/client";
 
@@ -9,12 +8,14 @@ type globalContextType = {
 	currentWorkflowStep: number;
 	isOwner: boolean;
 	isVoter: boolean;
+	refetchWorkflowStatus: () => void;
 	// logout: () => void;
 };
 const globalContextDefaultValues: globalContextType = {
 	currentWorkflowStep: 0,
 	isOwner: false,
 	isVoter: false,
+	refetchWorkflowStatus: () => { },
 	// logout: () => {},
 };
 const GlobalContext = createContext<globalContextType>(globalContextDefaultValues);
@@ -54,6 +55,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		currentWorkflowStep: Number(workflowStatusStep),
 		isOwner: address === ownerAddress,
 		isVoter: false,
+		refetchWorkflowStatus: refetchWorkflowStatus
 	}
 
 	return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
