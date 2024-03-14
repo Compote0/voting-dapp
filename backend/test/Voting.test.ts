@@ -6,7 +6,8 @@ describe("Voting Tests", function () {
 	let owner: any, addr1: any, addr2: any, addr3: any;
 	// le contrat
 	let voting: any;
-
+	//TODO: faire une liste de fixture
+	//dans chaque beforeeach de describe, load la fixture
 	beforeEach(async function () {
 		[owner, addr1, addr2, addr3] = await ethers.getSigners();
 
