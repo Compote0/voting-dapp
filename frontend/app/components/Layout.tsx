@@ -1,19 +1,14 @@
-'use client';
-
-import { useAccount } from "wagmi";
+"use client";
 import Header from './Header';
 import Footer from './Footer';
-import Workflow from '../components/Workflow';
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
+import Workflow from './Workflow';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const { address, isConnected } = useAccount();
-
   return (
     <Flex
       direction="column"
@@ -23,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
       bg="#4B3F72"
     >
       <Header />
-      <Workflow hasMounted={isConnected} connectedWallet={{ address }} />
+      <Workflow />
       <Flex
         grow="1"
         p="2rem"

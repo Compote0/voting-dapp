@@ -1,6 +1,3 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
 import WorkflowStatus from "../types/status-workflow";
 import {
   Step,
@@ -12,41 +9,16 @@ import {
   StepTitle,
   Stepper,
   Box,
+  Button,
 } from '@chakra-ui/react';
+import { useGlobalContext } from '../context/store';
 
-interface WorkflowProps {
-  hasMounted: boolean;
-  connectedWallet: {
-    address?: string;
-  };
-}
-
-const WORKFLOWS = Object.entries(WorkflowStatus)
-  .filter(([_, value]) => typeof value === 'number')
-  .map(([key, _]) => ({
-    title: key
-      .replace(/([A-Z])/g, ' $1') 
-      .trim()
-      .replace('Ended', ' Ended'),
-  }));
-
-const Workflow = ({ hasMounted, connectedWallet }:WorkflowProps) => {
-  const [activeStep, setActiveStep] = useState(0);
-
-  useEffect(() => {
-    const currentStatusIndex = Object.values(WorkflowStatus).indexOf(WorkflowStatus.VotingSessionStarted);
-    setActiveStep(currentStatusIndex >= 0 ? currentStatusIndex : 0);
-  }, [connectedWallet]); 
-
-  if (!hasMounted || !connectedWallet?.address) {
-    return null;
-  }
-
-
+const Workflow = () => {
+  const { currentWorkflowStep, isOwner } = useGlobalContext();
 
   return (
-    <Stepper p="2rem" colorScheme="#417B5A" index={activeStep}>
-      {WORKFLOWS.map((workflow, index) => (
+    <Stepper p="2rem" colorScheme="#417B5A" index={currentWorkflowStep}>
+      {Object.values(WorkflowStatus).map((workflow, index) => (
         <Step key={index}>
           <StepIndicator>
             <StepStatus
@@ -56,11 +28,12 @@ const Workflow = ({ hasMounted, connectedWallet }:WorkflowProps) => {
             />
           </StepIndicator>
           <Box flexShrink="0" color="#D0CEBA">
-            <StepTitle>{workflow.title}</StepTitle>
+            <StepTitle>{workflow}</StepTitle>
           </Box>
           <StepSeparator />
         </Step>
       ))}
+      {isOwner && (<Button>Next Step</Button>)}
     </Stepper>
   );
 };
