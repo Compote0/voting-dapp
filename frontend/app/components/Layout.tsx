@@ -13,26 +13,26 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const { address, isConnected } = useAccount();
-  
+
   return (
     <Flex
       direction="column"
       justifyContent="space-between"
-      minHeight="80vh"
+      minH="100vh"
       alignItems="stretch"
       bg="#4B3F72"
     >
-        <Header />
-        <Workflow hasMounted={isConnected} connectedWallet={{ address }} />
-        <Flex
-          grow="1"
-          p="2rem"
-          direction="column" 
-          flex="1" 
-        >
-            {children}
-        </Flex>
-        <Footer />
+      <Header />
+      <Workflow hasMounted={isConnected} connectedWallet={{ address }} />
+      <Flex
+        grow="1"
+        p="2rem"
+        direction="column"
+        flex="1"
+      >
+        {children}
+      </Flex>
+      <Footer />
     </Flex>
   );
 }

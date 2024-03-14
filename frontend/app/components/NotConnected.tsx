@@ -1,14 +1,9 @@
 'use client';
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { MdOutlineHowToVote } from "react-icons/md";
-import {
-    Alert,
-    AlertIcon,
-} from '@chakra-ui/react'
-import React from "react";
 
 function NotConnected() {
-  return (
+	return (
 		<Box textAlign="center" p="4">
 			<Flex direction="column" justifyContent="center" alignItems="center" height="0vh">
 				<Box mb="4">
@@ -22,7 +17,7 @@ function NotConnected() {
 				</Box>
 			</Flex>
 		</Box>
-  )
+	)
 }
 
 export default NotConnected
