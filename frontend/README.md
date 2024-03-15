@@ -65,11 +65,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## todo
 
-- css
-  - startvoting
-- writecontrat
-  - register voter (1)
-  - register proposal (2)
 - readcontrat
   - winningproposal (3)
 - events (independent)
