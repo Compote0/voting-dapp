@@ -1,6 +1,3 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
 import WorkflowStatus from "../types/status-workflow";
 import {
   Step,
@@ -12,42 +9,107 @@ import {
   StepTitle,
   Stepper,
   Box,
+  Button, useToast
 } from '@chakra-ui/react';
+import { useGlobalContext } from '../context/store';
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { contractAddress, contractAbi } from "@/app/constants";
+import { useEffect } from "react";
+import { WorkflowStatusName } from "@/app/types/status-workflow";
 
-interface WorkflowProps {
-  hasMounted: boolean;
-  connectedWallet: {
-    address?: string;
-  };
-}
+const Workflow = () => {
+  const { currentWorkflowStep, isOwner, refetchWorkflowStatus } = useGlobalContext();
 
-const WORKFLOWS = Object.entries(WorkflowStatus)
-  .filter(([_, value]) => typeof value === 'number')
-  .map(([key, _]) => ({
-    title: key
-      .replace(/([A-Z])/g, ' $1') 
-      .trim()
-      .replace('Ended', ' Ended'),
-  }));
+  const toast = useToast();
 
-const Workflow = ({ hasMounted, connectedWallet }:WorkflowProps) => {
-  const [activeStep, setActiveStep] = useState(0);
+  const {
+    data: hash,
+    error,
+    isPending: setIsPending,
+    writeContract,
+  } = useWriteContract({
+    mutation: {
+      onSuccess: () => {
+        toast({
+          title: "La transaction du changement de workflow",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: error.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+    },
+  });
 
-  useEffect(() => {
-    const currentStatusIndex = Object.values(WorkflowStatus).indexOf(WorkflowStatus.VotingSessionStarted);
-    setActiveStep(currentStatusIndex >= 0 ? currentStatusIndex : 0);
-  }, [connectedWallet]); 
-
-  if (!hasMounted || !connectedWallet?.address) {
-    return null;
+  const moveToNextWorkflowStep = async () => {
+    let functionName = '';
+    switch (currentWorkflowStep) {
+      case WorkflowStatus.RegisteringVoters:
+        functionName = 'startProposalsRegistering';
+        break;
+      case WorkflowStatus.ProposalsRegistrationStarted:
+        functionName = 'endProposalsRegistering';
+        break;
+      case WorkflowStatus.ProposalsRegistrationEnded:
+        functionName = 'startVotingSession';
+        break;
+      case WorkflowStatus.VotingSessionStarted:
+        functionName = 'endVotingSession';
+        break;
+      case WorkflowStatus.VotingSessionEnded:
+        functionName = 'tallyVotes';
+        break;
+      case WorkflowStatus.VotesTallied:
+        functionName = 'reset';
+        break;
+      default:
+        break;
+    }
+    if (functionName.trim().length !== 0) {
+      writeContract({
+        address: contractAddress,
+        abi: contractAbi,
+        functionName
+      });
+    }
   }
 
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
+  useEffect(() => {
+    if (isConfirmed) {
+      refetchWorkflowStatus();
+      toast({
+        title: `Le workflow a changé vers la step ${WorkflowStatusName[currentWorkflowStep + 1]}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (error) {
+      toast({
+        title: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [isConfirmed]);
 
   return (
-    <Stepper p="2rem" colorScheme="#417B5A" index={activeStep}>
-      {WORKFLOWS.map((workflow, index) => (
-        <Step key={index}>
+    <Stepper p="2rem" colorScheme="#417B5A" index={currentWorkflowStep}>
+      {WorkflowStatusName.map((workflow, index) => (
+        <Step key={crypto.randomUUID()}>
           <StepIndicator>
             <StepStatus
               complete={<Box color="#417B5A"><StepIcon /></Box>}
@@ -56,11 +118,15 @@ const Workflow = ({ hasMounted, connectedWallet }:WorkflowProps) => {
             />
           </StepIndicator>
           <Box flexShrink="0" color="#D0CEBA">
-            <StepTitle>{workflow.title}</StepTitle>
+            <StepTitle>{workflow}</StepTitle>
           </Box>
           <StepSeparator />
         </Step>
       ))}
+      {isOwner &&
+        <Button disabled={setIsPending} onClick={moveToNextWorkflowStep}>
+          {setIsPending ? "Confirming..." : (currentWorkflowStep === WorkflowStatusName.length - 1 ? "Reset" : "Next Step")}
+        </Button>}
     </Stepper>
   );
 };

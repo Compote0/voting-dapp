@@ -1,5 +1,5 @@
 'use client';
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
 import '@rainbow-me/rainbowkit/styles.css';
 
 import {
@@ -16,11 +16,13 @@ import {
 } from "@tanstack/react-query";
 import { ReactNode } from 'react';
 
+const WALLETCONNECT_PROJECTID = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECTID || "";
+
 const config = getDefaultConfig({
-    appName: 'My RainbowKit App',
-    projectId: '03f8ec0f8ad40a9b543bb4a1051dd071',
-    chains: [hardhat],
-    ssr: true, // If your dApp uses server side rendering (SSR)
+  appName: 'My RainbowKit App',
+  projectId: WALLETCONNECT_PROJECTID,
+  chains: [hardhat],
+  ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
 interface RainbowKitAndChakraProviderProps {
@@ -32,23 +34,23 @@ const queryClient = new QueryClient();
 const RainbowKitAndChakraProvider = ({ children }: RainbowKitAndChakraProviderProps) => {
   return (
     <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider>
-                <ChakraProvider toastOptions={{ 
-                      defaultOptions: { 
-                        duration: 6000, 
-                        isClosable: true, 
-                        position: "bottom"
-                      } 
-                    }}
-                    
-                  >
-                    {children}
-                </ChakraProvider>
-            </RainbowKitProvider>
-        </QueryClientProvider>
-    </WagmiProvider>
-  )
-}
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <ChakraProvider toastOptions={{
+            defaultOptions: {
+              duration: 6000,
+              isClosable: true,
+              position: "bottom"
+            }
+          }}
 
-export default RainbowKitAndChakraProvider
+          >
+            {children}
+          </ChakraProvider>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+};
+
+export default RainbowKitAndChakraProvider;

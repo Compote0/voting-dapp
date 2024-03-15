@@ -2,7 +2,7 @@ import RainbowKitAndChakraProvider from "./RainbowKitAndChakraProvider";
 import Layout from "./components/Layout";
 import { ReactNode } from 'react';
 import { Inter } from "next/font/google";
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { GlobalContextProvider } from "@/app/context/store";
 
 
 export const metadata = {
@@ -19,14 +19,16 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-  <html lang="en">
-    	<body className={inter.className}>
+    <html lang="en">
+      <body className={inter.className}>
         <RainbowKitAndChakraProvider>
-          <Layout>
-            {children}
-          </Layout>
+          <GlobalContextProvider>
+            <Layout>
+              {children}
+            </Layout>
+          </GlobalContextProvider>
         </RainbowKitAndChakraProvider>
       </body>
-  </html>
+    </html>
   );
 }

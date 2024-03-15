@@ -3,6 +3,14 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"license": "MIT",
+	"scripts": {
+		"compile": "yarn hardhat compile",
+		"test": "yarn hardhat test",
+		"coverage": "yarn hardhat coverage",
+		"node": "yarn hardhat node",
+		"local": "yarn hardhat run ./scripts/deploy.ts --network localhost",
+		"sepolia": "yarn hardhat run ./scripts/deploy.ts --network sepolia"
+	},
 	"dependencies": {
 		"@openzeppelin/contracts": "^5.0.2",
 		"@openzeppelin/merkle-tree": "^1.0.6",

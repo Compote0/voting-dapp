@@ -132,7 +132,6 @@ contract Voting is Ownable {
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
     }
 
-
    function tallyVotes() external onlyOwner {
        require(workflowStatus == WorkflowStatus.VotingSessionEnded, "Current status is not voting session ended");
        uint _winningProposalId;
@@ -145,5 +144,13 @@ contract Voting is Ownable {
        
        workflowStatus = WorkflowStatus.VotesTallied;
        emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
+    }
+
+    function reset() external onlyOwner {
+        // require(workflowStatus == WorkflowStatus.VotesTallied, "Votes are not tallied yet");
+        winningProposalID = 0;
+       
+       workflowStatus = WorkflowStatus.RegisteringVoters;
+    //    emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.RegisteringVoters);
     }
 }
