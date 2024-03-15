@@ -49,9 +49,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
           - Layout (RootLayout)
             - Flex
               - Header
-              - Workflow
+              - Workflow (if connected)
               - Home (page.tsx)
-                - Voting (addVoter, addProposal)
+                - Voting
                   - VotingStep
                     - RegisterVoter
                     - RegisterProposal
