@@ -60,6 +60,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "getVoter",
+		account: address,
 		args: [address],
 	});
 	
