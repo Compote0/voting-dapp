@@ -1,44 +1,17 @@
-import {
-    RegisterVoter,
-    RegisterProposal,
-    StartVoting,
-    VotingSession,
-    WinningProposal
-} from './index';
-import { useGlobalContext } from '../context/store';
-import WorkflowStatus from '../types/status-workflow';
-import { EndVoting } from './EndVoting';
+import { Box, Flex } from '@chakra-ui/react';
+import VotingSteps from './VotingSteps';
+import Events from './Events';
 
 const Voting = () => {
-    const { currentWorkflowStep } = useGlobalContext();
-
     return (
-        <>
-            {
-                currentWorkflowStep === WorkflowStatus.RegisteringVoters &&
-                <RegisterVoter />
-            }
-            {
-                currentWorkflowStep === WorkflowStatus.ProposalsRegistrationStarted &&
-                <RegisterProposal />
-            }
-            {
-                currentWorkflowStep === WorkflowStatus.ProposalsRegistrationEnded &&
-                <StartVoting />
-            }
-            {
-                currentWorkflowStep === WorkflowStatus.VotingSessionStarted &&
-                <VotingSession />
-            }
-            {
-                currentWorkflowStep === WorkflowStatus.VotingSessionEnded &&
-                <EndVoting />
-            }
-            {
-                currentWorkflowStep === WorkflowStatus.VotesTallied &&
-                <WinningProposal />
-            }
-        </>
+        <Flex justify="center">
+            <Box m={2} minW={600}>
+                <VotingSteps />
+            </Box>
+            <Box m={2}>
+                <Events />
+            </Box>
+        </Flex>
     );
 };
 

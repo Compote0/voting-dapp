@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { MdOutlineHowToVote } from "react-icons/md";
 
-export default function NotConnected() {
+const NotConnected = () => {
   return (
     <Box textAlign="center" p="4">
       <Flex direction="column" justifyContent="center" alignItems="center" >
@@ -18,3 +18,5 @@ export default function NotConnected() {
     </Box>
   )
 }
+
+export default NotConnected

@@ -54,6 +54,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
 	const value: globalContextType = {
 		currentWorkflowStep: Number(workflowStatusStep),
 		isOwner: address === ownerAddress,
+		// TODO: update isVoter, call getVoter with the wallet address and check the Voter return variable property isRegistered === true
 		isVoter: false,
 		refetchWorkflowStatus: refetchWorkflowStatus
 	}
