@@ -3,6 +3,8 @@ import { ReactNode, createContext, useContext } from "react";
 import { contractAddress, contractAbi } from "@/app/constants";
 import { useReadContract, useAccount } from "wagmi";
 // import { publicClient } from "@/utils/client";
+import { VoterInfo } from "@/app/types/voter";
+
 
 type globalContextType = {
 	currentWorkflowStep: number;
@@ -51,11 +53,23 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		account: address,
 	});
 
+	const {
+		data: voterInfo,
+		refetch: refetchVoterInfo,
+	} = useReadContract({ 
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: "getVoter",
+		account: address,
+		args: [address],
+	});
+	
+	const isVoter = VoterInfo?.isRegistered === true;
+
 	const value: globalContextType = {
 		currentWorkflowStep: Number(workflowStatusStep),
 		isOwner: address === ownerAddress,
-		// TODO: update isVoter, call getVoter with the wallet address and check the Voter return variable property isRegistered === true
-		isVoter: true, // data.isRegistered === true
+		isVoter: isVoter, 
 		refetchWorkflowStatus: refetchWorkflowStatus
 	}
 

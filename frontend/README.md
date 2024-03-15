@@ -67,11 +67,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - css
   - hide workflow
-  - startvoting
   - endvoting
-- writecontrat
-  - register voter (1)
-  - register proposal (2)
 - readcontrat
   - winningproposal (3)
 - events (independent)
