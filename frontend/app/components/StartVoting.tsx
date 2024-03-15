@@ -1,11 +1,13 @@
-import { Heading, Text } from '@chakra-ui/react';
+import { Heading, Text, Box, Image } from '@chakra-ui/react';
 
 export const StartVoting = () => {
-	return (
-		<>
-			<Heading>Start Voting Session</Heading>
-			<Text>The voting session will start soon</Text>
-			{/* put funny GIF for waiting https://tenor.com/fr/view/gamies-smp-gif-6530461872325198566 */}
-		</>
-	);
+  return (
+    <Box textAlign="center" p={5}>
+      <Heading color='#D0CEBA'>Start Voting Session</Heading>
+      <Text color='#E9D2C0' mt={4}>Wait for the admin to begin the voting session.</Text>
+      <Box mt={4}>
+	  <Image src="https://media1.tenor.com/m/13VnwKt5qS0AAAAd/waiting.gif" alt="Waiting GIF" boxSize="250px" mx="auto"/>
+      </Box>
+    </Box>
+  );
 };
