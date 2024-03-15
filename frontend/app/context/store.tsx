@@ -56,20 +56,20 @@ export const GlobalContextProvider = ({ children }: Props) => {
 	const {
 		data: voterInfo,
 		refetch: refetchVoterInfo,
-	} = useReadContract({ 
+	} = useReadContract({
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "getVoter",
 		account: address,
 		args: [address],
 	});
-	
-	const isVoter = VoterInfo?.isRegistered === true;
+
+	const isVoter = (voterInfo as VoterInfo)?.isRegistered === true;
 
 	const value: globalContextType = {
 		currentWorkflowStep: Number(workflowStatusStep),
 		isOwner: address === ownerAddress,
-		isVoter: isVoter, 
+		isVoter: isVoter,
 		refetchWorkflowStatus: refetchWorkflowStatus
 	}
 
