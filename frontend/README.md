@@ -80,3 +80,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   - ProposalRegistered
   - Voted
 - contrat testing fixture & beforeEach
+- setup sepolia chain (4)
+- deploy on vercel (5)
