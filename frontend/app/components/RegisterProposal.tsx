@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from 'react';
 import { Heading, Text, useToast, Button, Input } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
@@ -22,12 +23,12 @@ export const RegisterProposal = () => {
     mutation: {
       onSuccess: () => {
         toast({
-          title: 'Proposal registered successfully',
-          status: 'success',
+          title: 'Transaction pending...',
+          description: "Your proposal is being registered.",
+          status: 'info',
           duration: 3000,
           isClosable: true,
         });
-        setProposalDescription(''); 
       },
       onError: (error) => {
         toast({
@@ -47,21 +48,22 @@ export const RegisterProposal = () => {
   useEffect(() => {
     if (isSuccess) {
       toast({
-        title: 'Proposal registration is confirmed on the blockchain',
+        title: 'Proposal registration is confirmed',
         status: 'success',
         duration: 3000,
         isClosable: true,
       });
+      setProposalDescription('');
     }
-    if (error) {
-      toast({
-        title: error.message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }, [isSuccess, error, toast]);
+	if (error) {
+        toast({
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+  }, [isSuccess]);
 
   const handleAddProposalClick = async () => {
     if (proposalDescription.trim()) {
@@ -80,6 +82,7 @@ export const RegisterProposal = () => {
       });
     }
   };
+
 
   return (
     <>

@@ -22,7 +22,7 @@ export const RegisterVoter = () => {
     mutation: {
       onSuccess: () => {
         toast({
-          title: 'Voter registered successfully',
+          title: 'Registration is pending',
           status: 'success',
           duration: 3000,
           isClosable: true,
@@ -61,7 +61,7 @@ export const RegisterVoter = () => {
         isClosable: true,
       });
     }
-  }, [isSuccess, error, toast]);
+  }, [isSuccess]);
 
   const handleAddVoterClick = async () => {
     if (voterAddress) {
