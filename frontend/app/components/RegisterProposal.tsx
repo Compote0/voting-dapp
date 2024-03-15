@@ -1,23 +1,115 @@
-import { Heading, Text } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { Heading, Text, useToast, Button, Input } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { contractAddress, contractAbi } from '@/app/constants/index';
 
 export const RegisterProposal = () => {
-	const { isVoter } = useGlobalContext();
+  const { isVoter } = useGlobalContext();
+  const [proposalDescription, setProposalDescription] = useState('');
+  const toast = useToast();
 
-	return (
-		<>
-			<Heading>Register Proposal</Heading>
-			{isVoter ? (
-				<Text>Please proceed to proposal registration</Text>
-				/* TODO: input for proposal description and submit button to trigger addProposal function of the contract */
+  const {
+    data: hash,
+    error,
+    isPending,
+    writeContract,
+  } = useWriteContract({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: 'addProposal',
+    args: [proposalDescription],
+    mutation: {
+      onSuccess: () => {
+        toast({
+          title: 'Proposal registered successfully',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+        setProposalDescription(''); 
+      },
+      onError: (error) => {
+        toast({
+          title: error.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+    },
+  });
 
-				/* TODO: if time */
-				/* TODO: put a progress bar to see how much proposal we have out of max proposal = currently 5*/
-				/* TODO: create and load table to list the proposal (ID | DESCRIPTION | VOTE COUNT) */
-				/* TODO: automatise the loading of the tab (test, listen addProposal event and fill the tab when there is new proposal added) */
-			) : (
-				<Text>The voters are currently in the process of registering proposals</Text>
-			)}
-		</>
-	);
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: 'Proposal registration is confirmed on the blockchain',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (error) {
+      toast({
+        title: error.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [isSuccess, error, toast]);
+
+  const handleAddProposalClick = async () => {
+    if (proposalDescription.trim()) {
+      writeContract({
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: 'addProposal',
+		args: [proposalDescription],
+	  });
+    } else {
+      toast({
+        title: 'Please enter a valid proposal description',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  return (
+    <>
+      <Heading color='#D0CEBA'>Register Proposal</Heading>
+      {isVoter ? (
+        <>
+          <Text color='#D0CEBA'>Please proceed to proposal registration</Text>
+          <Input
+            placeholder="Enter proposal's description"
+            value={proposalDescription}
+            onChange={(e) => setProposalDescription(e.target.value)}
+            mt={4}
+            color='#E9D2C0'
+          />
+          <Button
+            onClick={handleAddProposalClick}
+            isLoading={isPending}
+            loadingText="Registering..."
+            colorScheme="teal"
+            variant="solid"
+            mt={4}
+          >
+            Register Proposal
+          </Button>
+        </>
+      ) : (
+        <Text color='#D0CEBA'>Only voters can register proposals</Text>
+      )}
+    </>
+  );
 };
+
+export default RegisterProposal;

@@ -6,8 +6,7 @@ import { contractAddress, contractAbi } from '@/app/constants/index';
 
 export const RegisterVoter = () => {
   const [voterAddress, setVoterAddress] = useState('');
-  const [isOwner, setIsOwner] = useState(true); 
-  const toast = useToast();
+  const { isOwner } = useGlobalContext();   const toast = useToast();
 
   const {
     data: hash,
