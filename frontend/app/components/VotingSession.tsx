@@ -1,8 +1,16 @@
-import { Heading, Text } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
+import MemeImage, { MemeImageType } from './MemeImage';
 
 export const VotingSession = () => {
 	const { isVoter } = useGlobalContext();
+
+	const memeImageData: MemeImageType = {
+		src: 'https://media.tenor.com/zGv2ArHKgyUAAAAi/our-power-march-for-our-lives.gif',
+		alt: 'our-power-march-for-our-lives',
+		gifURL: "https://tenor.com/view/our-power-march-for-our-lives-gun-violence-gun-violence-prevention-vote-is-our-power-gif-16811247",
+		description: "Our Power March For Our Lives Sticker from Our Power Stickers"
+	};
 
 	return (
 		<>
@@ -14,7 +22,12 @@ export const VotingSession = () => {
 				/* TODO: when voter.hasVoted === true, disable all Vote buttons*/
 				/* TODO: show the proposalId voted*/
 			) : (
-				<Text>The voters are currently in the process of voting session</Text>
+				<>
+					<Text>The voters are currently in the process of voting session</Text>
+					<Box boxSize='sm' mt={8}>
+						<MemeImage memeImageData={memeImageData} />
+					</Box>
+				</>
 			)}
 		</>
 	);

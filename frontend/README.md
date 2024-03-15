@@ -66,9 +66,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## todo
 
 - css
-  - hide workflow
   - startvoting
-  - endvoting
 - writecontrat
   - register voter (1)
   - register proposal (2)

@@ -1,6 +1,14 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
+import MemeImage, { MemeImageType } from "./MemeImage";
 
 export const WinningProposal = () => {
+	const memeImageData: MemeImageType = {
+		src: 'https://media1.tenor.com/m/AVKXBs5934YAAAAd/dumbledore-clapping.gif',
+		alt: 'dumbledore-clapping',
+		gifURL: "https://tenor.com/view/dumbledore-clapping-gif-25342009",
+		description: "Dumbledore Clapping GIF from Dumbledore GIFs"
+	};
+
 	return (
 		<>
 			<Heading>The winner is 🥁</Heading>
@@ -10,6 +18,9 @@ export const WinningProposal = () => {
 				/* TODO: trigger confetti https://confettijs.org/*/
 			}
 			<Text>The proposal number X</Text>
+			<Box boxSize='sm' mt={8}>
+				<MemeImage memeImageData={memeImageData} />
+			</Box>
 		</>
 	);
 };
