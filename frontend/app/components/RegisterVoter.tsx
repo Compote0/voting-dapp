@@ -1,12 +1,13 @@
+import MemeImage, { MemeImageType } from './MemeImage';
 import { useState, useEffect } from 'react';
-import { Heading, Text, useToast, Button, Input } from '@chakra-ui/react';
+import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { contractAddress, contractAbi } from '@/app/constants/index';
 
 export const RegisterVoter = () => {
   const [voterAddress, setVoterAddress] = useState('');
-  const { isOwner } = useGlobalContext();   
+  const { isOwner } = useGlobalContext();
   const toast = useToast();
 
   const {
@@ -15,10 +16,6 @@ export const RegisterVoter = () => {
     isPending,
     writeContract,
   } = useWriteContract({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: 'setVoter',
-    args: [voterAddress],
     mutation: {
       onSuccess: () => {
         toast({
@@ -66,9 +63,9 @@ export const RegisterVoter = () => {
   const handleAddVoterClick = async () => {
     if (voterAddress) {
       writeContract({
-				address: contractAddress,
-				abi: contractAbi,
-				functionName: "addVoter",
+        address: contractAddress,
+        abi: contractAbi,
+        functionName: "addVoter",
         args: [voterAddress],
       });
     } else {
@@ -80,6 +77,13 @@ export const RegisterVoter = () => {
       });
     }
   };
+
+  const memeImageData: MemeImageType = {
+    src: 'https://media1.tenor.com/m/VcsKeKpld9sAAAAC/frozen-registration.gif',
+    alt: 'frozen-registration',
+    gifURL: "https://tenor.com/view/frozen-registration-gif-25435300",
+    description: "Frozen Registration GIF from Frozen GIFs"
+  }
 
   return (
     <>
@@ -106,7 +110,12 @@ export const RegisterVoter = () => {
           </Button>
         </>
       ) : (
-        <Text color='#D0CEBA'>The owner is currently in the process of registering voters</Text>
+        <>
+          <Text color='#D0CEBA'>The owner is currently in the process of registering voters</Text>
+          <Box boxSize='sm' mt={8}>
+            <MemeImage memeImageData={memeImageData} />
+          </Box>
+        </>
       )}
     </>
   );

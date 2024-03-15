@@ -1,6 +1,6 @@
-'use client';
+import MemeImage, { MemeImageType } from './MemeImage';
 import { useState, useEffect } from 'react';
-import { Heading, Text, useToast, Button, Input } from '@chakra-ui/react';
+import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { contractAddress, contractAbi } from '@/app/constants/index';
@@ -10,16 +10,19 @@ export const RegisterProposal = () => {
   const [proposalDescription, setProposalDescription] = useState('');
   const toast = useToast();
 
+  const memeImageData: MemeImageType = {
+    src: 'https://media1.tenor.com/m/5qHvGMx9eJMAAAAC/throwing-papers-im-done.gif',
+    alt: 'throwing-papers-im-done',
+    gifURL: "https://tenor.com/view/throwing-papers-im-done-nope-not-today-sheldon-gif-5610220",
+    description: "Paper Throwing Sheldon GIF from Throwing Papers GIFs"
+  }
+
   const {
     data: hash,
     error,
     isPending,
     writeContract,
   } = useWriteContract({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: 'addProposal',
-    args: [proposalDescription],
     mutation: {
       onSuccess: () => {
         toast({
@@ -55,24 +58,24 @@ export const RegisterProposal = () => {
       });
       setProposalDescription('');
     }
-	if (error) {
-        toast({
-          title: error.message,
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+    if (error) {
+      toast({
+        title: error.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   }, [isSuccess]);
 
   const handleAddProposalClick = async () => {
     if (proposalDescription.trim()) {
       writeContract({
-		address: contractAddress,
-		abi: contractAbi,
-		functionName: 'addProposal',
-		args: [proposalDescription],
-	  });
+        address: contractAddress,
+        abi: contractAbi,
+        functionName: 'addProposal',
+        args: [proposalDescription],
+      });
     } else {
       toast({
         title: 'Please enter a valid proposal description',
@@ -109,7 +112,12 @@ export const RegisterProposal = () => {
           </Button>
         </>
       ) : (
-        <Text color='#D0CEBA'>Only voters can register proposals</Text>
+        <>
+          <Text color='#D0CEBA'>The voters are currently in the process of registering proposals</Text>
+          <Box boxSize='sm' mt={8}>
+            <MemeImage memeImageData={memeImageData} />
+          </Box>
+        </>
       )}
     </>
   );

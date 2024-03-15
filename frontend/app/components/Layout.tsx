@@ -3,12 +3,15 @@ import Header from './Header';
 import Footer from './Footer';
 import { Flex } from '@chakra-ui/react';
 import Workflow from './Workflow';
+import { useAccount } from "wagmi";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const { isConnected } = useAccount();
+
   return (
     <Flex
       direction="column"
@@ -18,7 +21,7 @@ const Layout = ({ children }: LayoutProps) => {
       bg="#4B3F72"
     >
       <Header />
-      <Workflow />
+      {isConnected && <Workflow />}
       <Flex
         grow="1"
         p="2rem"

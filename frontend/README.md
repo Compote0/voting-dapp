@@ -65,9 +65,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## todo
 
-- css
-  - hide workflow
-  - endvoting
 - readcontrat
   - winningproposal (3)
 - events (independent)

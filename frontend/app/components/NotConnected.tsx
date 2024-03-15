@@ -1,7 +1,15 @@
 import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import { MdOutlineHowToVote } from "react-icons/md";
+import MemeImage, { MemeImageType } from "./MemeImage";
 
 const NotConnected = () => {
+  const memeImageData: MemeImageType = {
+    src: 'https://media1.tenor.com/m/kh_cOjHuufEAAAAd/sponge-bob-sponge-bob-mail.gif',
+    alt: 'sponge-bob-sponge-bob-mail',
+    gifURL: "https://tenor.com/view/sponge-bob-sponge-bob-mail-postman-election-day-vote-gif-18099193",
+    description: "Sponge Bob Sponge Bob Mail GIF from Sponge Bob GIFs"
+  };
+
   return (
     <Box textAlign="center" p="4">
       <Flex direction="column" justifyContent="center" alignItems="center" >
@@ -14,9 +22,12 @@ const NotConnected = () => {
             Please connect your wallet to continue.
           </Text>
         </Box>
+        <Box boxSize='sm' mt={8}>
+          <MemeImage memeImageData={memeImageData} />
+        </Box>
       </Flex>
     </Box>
-  )
-}
+  );
+};
 
-export default NotConnected
+export default NotConnected;
