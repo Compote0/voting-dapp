@@ -50,6 +50,33 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
             - Flex
               - Header
               - Workflow
-              - Voting (addVoter, addProposal)
-              - Sidebar (events)
+              - Home (page.tsx)
+                - Voting (addVoter, addProposal)
+                  - VotingStep
+                    - RegisterVoter
+                    - RegisterProposal
+                    - StartVoting
+                    - VotingSession
+                    - EndVoting
+                    - WinningProposal
+                  - Events
+                - NoConnected (events)
               - Footer
+
+## todo
+
+- css
+  - hide workflow
+  - startvoting
+  - endvoting
+- writecontrat
+  - register voter (1)
+  - register proposal (2)
+- readcontrat
+  - winningproposal (3)
+- events (independent)
+  - VoterRegistered
+  - WorkflowStatusChange
+  - ProposalRegistered
+  - Voted
+- contrat testing fixture & beforeEach

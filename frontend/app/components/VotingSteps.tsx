@@ -39,7 +39,7 @@ const VotingSteps = () => {
                 <WinningProposal />
             }
         </>
-    )
-}
+    );
+};
 
-export default VotingSteps
+export default VotingSteps;

@@ -5,13 +5,6 @@ enum WorkflowStatus {
 	VotingSessionStarted,
 	VotingSessionEnded,
 	VotesTallied,
-
-	// RegisteringVoters = "Registering Voters",
-	// ProposalsRegistrationStarted = "Proposals Registration Started",
-	// ProposalsRegistrationEnded = "Proposals Registration Ended",
-	// VotingSessionStarted = "Voting Session Started",
-	// VotingSessionEnded = "Voting Session Ended",
-	// VotesTallied = "Votes Tallied",
 }
 
 export default WorkflowStatus;
@@ -24,12 +17,3 @@ export const WorkflowStatusName = [
 	"Voting Session Ended",
 	"Votes Tallied",
 ];
-
-// export function getWorkflowStatusIndex(workflowParam: WorkflowStatus) {
-// 	return Object.keys(WorkflowStatus).findIndex((workflow) => {
-// 		console.log("workflow", workflow);
-// 		console.log("workflowParam", workflowParam);
-// 		console.log("workflowParam.[x]", WorkflowStatus[workflowParam]);
-// 		workflow === workflowParam;
-// 	});
-// }
