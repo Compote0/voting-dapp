@@ -59,7 +59,10 @@ contract Voting is Ownable {
         return proposalsArray[_id];
     }
 
- 
+    function getProposals() external onlyVoters view returns (Proposal[] memory) {
+        return proposalsArray;
+    }
+
     // ::::::::::::: REGISTRATION ::::::::::::: // 
 
     function addVoter(address _addr) external onlyOwner {
@@ -132,25 +135,35 @@ contract Voting is Ownable {
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
     }
 
-   function tallyVotes() external onlyOwner {
-       require(workflowStatus == WorkflowStatus.VotingSessionEnded, "Current status is not voting session ended");
-       uint _winningProposalId;
-      for (uint256 p = 0; p < proposalsArray.length; p++) {
-           if (proposalsArray[p].voteCount > proposalsArray[_winningProposalId].voteCount) {
-               _winningProposalId = p;
-          }
-       }
-       winningProposalID = _winningProposalId;
-       
-       workflowStatus = WorkflowStatus.VotesTallied;
-       emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
+    function tallyVotes() external onlyOwner {
+        require(workflowStatus == WorkflowStatus.VotingSessionEnded, "Current status is not voting session ended");
+        uint _winningProposalId;
+        for (uint256 p = 0; p < proposalsArray.length; p++) {
+              if (proposalsArray[p].voteCount > proposalsArray[_winningProposalId].voteCount) {
+                  _winningProposalId = p;
+            }
+        }
+        winningProposalID = _winningProposalId;
+        
+        workflowStatus = WorkflowStatus.VotesTallied;
+        emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
     }
 
     function reset() external onlyOwner {
         // require(workflowStatus == WorkflowStatus.VotesTallied, "Votes are not tallied yet");
         winningProposalID = 0;
-       
-       workflowStatus = WorkflowStatus.RegisteringVoters;
-    //    emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.RegisteringVoters);
+
+        // empty proposal tab
+        for (uint8 i = 0; i < maxProposal; i++) {
+          if(proposalsArray.length != 0 ){
+            proposalsArray.pop();
+          } else {
+            break;
+          }
+        }
+
+        // reset workflowStatus
+        workflowStatus = WorkflowStatus.RegisteringVoters;
+        emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.RegisteringVoters);
     }
 }
