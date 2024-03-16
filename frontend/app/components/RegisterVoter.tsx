@@ -7,7 +7,7 @@ import { contractAddress, contractAbi } from '@/app/constants/index';
 
 export const RegisterVoter = () => {
   const [voterAddress, setVoterAddress] = useState('');
-  const { isOwner } = useGlobalContext();
+  const { isOwner, getEvents } = useGlobalContext();
   const toast = useToast();
 
   const {
@@ -42,6 +42,7 @@ export const RegisterVoter = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      getEvents();
       toast({
         title: 'Voter registration is confirmed on the blockchain',
         status: 'success',
@@ -61,12 +62,12 @@ export const RegisterVoter = () => {
   }, [isSuccess]);
 
   const handleAddVoterClick = async () => {
-    if (voterAddress) {
+    if (voterAddress.trim()) {
       writeContract({
         address: contractAddress,
         abi: contractAbi,
         functionName: "addVoter",
-        args: [voterAddress],
+        args: [voterAddress.trim()],
       });
     } else {
       toast({

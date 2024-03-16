@@ -1,4 +1,3 @@
-import WorkflowStatus from "../types/status-workflow";
 import {
   Step,
   StepIcon,
@@ -15,10 +14,10 @@ import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { contractAddress, contractAbi } from "@/app/constants";
 import { useEffect } from "react";
-import { WorkflowStatusName } from "@/app/types/status-workflow";
+import { WorkflowStatusName, WorkflowStatus } from "@/app/types/status-workflow";
 
 const Workflow = () => {
-  const { currentWorkflowStep, isOwner, refetchWorkflowStatus } = useGlobalContext();
+  const { currentWorkflowStep, isOwner, refetchWorkflowStatus, getEvents } = useGlobalContext();
 
   const toast = useToast();
 
@@ -89,6 +88,7 @@ const Workflow = () => {
   useEffect(() => {
     if (isConfirmed) {
       refetchWorkflowStatus();
+      getEvents();
       toast({
         title: `Le workflow a changé vers la step ${WorkflowStatusName[currentWorkflowStep + 1]}`,
         status: "success",
