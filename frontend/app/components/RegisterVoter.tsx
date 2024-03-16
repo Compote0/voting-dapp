@@ -1,5 +1,5 @@
+import { useState, useEffect, useRef } from 'react';
 import MemeImage, { MemeImageType } from './MemeImage';
-import { useState, useEffect } from 'react';
 import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
@@ -9,6 +9,9 @@ export const RegisterVoter = () => {
   const [voterAddress, setVoterAddress] = useState('');
   const { isOwner, getEvents } = useGlobalContext();
   const toast = useToast();
+  const toastRef = useRef(toast);
+  const errorRef = useRef<any | null>(null);
+  const getEventsRef = useRef(getEvents); 
 
   const {
     data: hash,
@@ -18,7 +21,7 @@ export const RegisterVoter = () => {
   } = useWriteContract({
     mutation: {
       onSuccess: () => {
-        toast({
+        toastRef.current({
           title: 'Registration is pending',
           status: 'success',
           duration: 3000,
@@ -26,7 +29,7 @@ export const RegisterVoter = () => {
         });
       },
       onError: (error) => {
-        toast({
+        toastRef.current({
           title: error.message,
           status: 'error',
           duration: 3000,
@@ -36,14 +39,18 @@ export const RegisterVoter = () => {
     },
   });
 
+  useEffect(() => {
+    errorRef.current = error;
+  }, [error]);
+
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
 
   useEffect(() => {
     if (isSuccess) {
-      getEvents();
-      toast({
+      getEventsRef.current();
+      toastRef.current({
         title: 'Voter registration is confirmed on the blockchain',
         status: 'success',
         duration: 3000,
@@ -51,15 +58,15 @@ export const RegisterVoter = () => {
       });
       setVoterAddress('');
     }
-    if (error) {
-      toast({
-        title: error.message,
+    if (errorRef.current) {
+      toastRef.current({
+        title: errorRef.current.message,
         status: 'error',
         duration: 3000,
         isClosable: true,
       });
     }
-  }, [isSuccess]);
+  }, [isSuccess]); 
 
   const handleAddVoterClick = async () => {
     if (voterAddress.trim()) {
@@ -70,7 +77,7 @@ export const RegisterVoter = () => {
         args: [voterAddress.trim()],
       });
     } else {
-      toast({
+      toastRef.current({
         title: 'Please enter a valid address',
         status: 'error',
         duration: 3000,

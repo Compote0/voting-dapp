@@ -3,7 +3,7 @@ import { useGlobalContext } from '../context/store';
 import MemeImage, { MemeImageType } from './MemeImage';
 
 export const VotingSession = () => {
-	const { isVoter } = useGlobalContext();
+	const { isVoter, refetchVoterInfo  } = useGlobalContext();
 
 	const memeImageData: MemeImageType = {
 		src: 'https://media.tenor.com/zGv2ArHKgyUAAAAi/our-power-march-for-our-lives.gif',
@@ -11,6 +11,8 @@ export const VotingSession = () => {
 		gifURL: "https://tenor.com/view/our-power-march-for-our-lives-gun-violence-gun-violence-prevention-vote-is-our-power-gif-16811247",
 		description: "Our Power March For Our Lives Sticker from Our Power Stickers"
 	};
+
+
 
 	return (
 		<>

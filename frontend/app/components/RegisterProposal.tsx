@@ -1,5 +1,5 @@
+import { useState, useEffect, useRef } from 'react';
 import MemeImage, { MemeImageType } from './MemeImage';
-import { useState, useEffect } from 'react';
 import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
@@ -9,6 +9,8 @@ export const RegisterProposal = () => {
   const { isVoter } = useGlobalContext();
   const [proposalDescription, setProposalDescription] = useState('');
   const toast = useToast();
+  const toastRef = useRef(toast);
+  const errorRef = useRef<any | null>(null);
 
   const memeImageData: MemeImageType = {
     src: 'https://media1.tenor.com/m/5qHvGMx9eJMAAAAC/throwing-papers-im-done.gif',
@@ -25,7 +27,7 @@ export const RegisterProposal = () => {
   } = useWriteContract({
     mutation: {
       onSuccess: () => {
-        toast({
+        toastRef.current({
           title: 'Transaction pending...',
           description: "Your proposal is being registered.",
           status: 'info',
@@ -34,7 +36,7 @@ export const RegisterProposal = () => {
         });
       },
       onError: (error) => {
-        toast({
+        toastRef.current({
           title: error.message,
           status: 'error',
           duration: 3000,
@@ -44,13 +46,17 @@ export const RegisterProposal = () => {
     },
   });
 
+  useEffect(() => {
+    errorRef.current = error;
+  }, [error]);
+
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
 
   useEffect(() => {
     if (isSuccess) {
-      toast({
+      toastRef.current({
         title: 'Proposal registration is confirmed',
         status: 'success',
         duration: 3000,
@@ -58,9 +64,9 @@ export const RegisterProposal = () => {
       });
       setProposalDescription('');
     }
-    if (error) {
-      toast({
-        title: error.message,
+    if (errorRef.current) {
+      toastRef.current({
+        title: errorRef.current.message,
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -77,7 +83,7 @@ export const RegisterProposal = () => {
         args: [proposalDescription.trim()],
       });
     } else {
-      toast({
+      toastRef.current({
         title: 'Please enter a valid proposal description',
         status: 'error',
         duration: 3000,
@@ -85,7 +91,6 @@ export const RegisterProposal = () => {
       });
     }
   };
-
 
   return (
     <>
