@@ -29,11 +29,11 @@ const globalContextDefaultValues: globalContextType = {
 	isVoter: false,
 	events: [],
 	getEvents: () => { },
-	refetchVoterInfo: () => {},
+	refetchVoterInfo: () => { },
 	proposals: [],
 	proposalId: 0,
-	refetchProposalId: () => { },	
-	refetchAllProposals: async () => {},
+	refetchProposalId: () => { },
+	refetchAllProposals: async () => { },
 };
 const GlobalContext = createContext<globalContextType>(globalContextDefaultValues);
 
@@ -98,8 +98,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		account: address,
 	});
 
-	const proposalId = typeof proposalIdData === 'number' ? proposalIdData : 0; 
-
+	const proposalId = typeof proposalIdData === 'number' ? proposalIdData : 0;
 
 	const {
 		data: allProposals,
@@ -108,10 +107,9 @@ export const GlobalContextProvider = ({ children }: Props) => {
 	} = useReadContract({
 		address: contractAddress,
 		abi: contractAbi,
-		functionName: "getAllProposals",
+		functionName: "getProposals",
 		account: address,
-	});		
-	
+	});
 
 	// --- read and refetch events
 	//
@@ -160,7 +158,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
 
 		setEvents(combinedEvents);
 	};
-  
+
 	useEffect(() => {
 		const getAllEvents = async () => {
 			if (address !== undefined) {
@@ -179,7 +177,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		events: events,
 		getEvents: getEvents,
 		refetchVoterInfo,
-		proposals,
+		proposals: allProposals as Proposal[],
 		proposalId,
 		refetchAllProposals: refetchAllProposals,
 		refetchProposalId: refetchProposalId,
