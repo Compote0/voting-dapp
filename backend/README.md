@@ -10,7 +10,7 @@ You need to have a .env file with the following properties
 - SEPOLIA_RPC_URL
 - ETHERSCAN_API_KEY
 
-## install hardhat
+## install
 
 ```shell
 yarn
@@ -26,25 +26,44 @@ yarn add --dev "hardhat@^2.14.0" "@nomicfoundation/hardhat-toolbox@^3.0.0" "@nom
 yarn add --dev @openzeppelin/contracts
 ```
 
-### compile contract
+## yarn commands
+
+### custom commands
+
+You can execute the following commands from scripts in package.json
+
+```shell
+yarn run compile
+yarn run test
+yarn run coverage
+yarn run node
+yarn run deploy-ll # deploy on local network
+yarn run deploy-se # deploy on sepolia network
+yarn run reset-ll # reset contract values on local network
+yarn run reset-se # reset contract values on sepolia network
+```
+
+### manual commands
+
+#### compile contract
 
 ```shell
 yarn hardhat compile
 ```
 
-### test contract
+#### test contract
 
 ```shell
 yarn hardhat test
 ```
 
-### run local blockchain
+#### run local blockchain
 
 ```shell
 yarn hardhat node
 ```
 
-### deploy contract
+#### deploy contract
 
 ```shell
 yarn hardhat run ./scripts/deploy.ts --network localhost
@@ -52,7 +71,18 @@ yarn hardhat run ./scripts/deploy.ts --network localhost
 yarn hardhat run ./scripts/deploy.ts --network sepolia
 ```
 
-## Test coverage
+## Tests
+
+### Hardhat address
+
+- contractAddress: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+- wallet address 1: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+- wallet address 2: 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+- wallet address 3: 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+- wallet address 4: 0x90F79bf6EB2c4f870365E785982E1f101E93b906
+- wallet address 5: 0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65
+
+### Coverage
 
 - initiation
   - should deploy the SM
@@ -67,6 +97,8 @@ yarn hardhat run ./scripts/deploy.ts --network sepolia
     - should revert when not a voter
     - should return GENESIS proposal
     - should return a first proposal
+  - getProposals
+    - should return a tab of proposals (43ms)
 - actions
   - addVoter
     - should revert when not owner
@@ -112,7 +144,7 @@ yarn hardhat run ./scripts/deploy.ts --network sepolia
       transaction with no receive/fallback function
     - shoud revert when send eth to the contract
 
-43 passing (2s)
+44 passing (2s)
 
 | File          | % Stmts    | % Branch   | % Funcs    | % Lines    | Uncovered Lines  |
 | ------------- | ---------- | ---------- | ---------- | ---------- | ---------------- |

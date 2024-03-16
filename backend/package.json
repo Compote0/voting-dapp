@@ -8,8 +8,12 @@
 		"test": "yarn hardhat test",
 		"coverage": "yarn hardhat coverage",
 		"node": "yarn hardhat node",
-		"local": "yarn hardhat run ./scripts/deploy.ts --network localhost",
-		"sepolia": "yarn hardhat run ./scripts/deploy.ts --network sepolia"
+		"deploy-ll": "yarn hardhat run ./scripts/deploy.ts --network localhost",
+		"deploy-se": "yarn hardhat run ./scripts/deploy.ts --network sepolia",
+		"reset-ll": "yarn hardhat run ./scripts/reset.ts --network localhost",
+		"reset-se": "yarn hardhat run ./scripts/reset.ts --network sepolia",
+		"proposal-ll": "yarn hardhat run ./scripts/getProposals.ts --network localhost",
+		"proposal-se": "yarn hardhat run ./scripts/getProposals.ts --network sepolia"
 	},
 	"dependencies": {
 		"@openzeppelin/contracts": "^5.0.2",
