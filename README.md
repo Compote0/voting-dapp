@@ -38,6 +38,9 @@ Voici la liste de la stack utilisée pour la réalisation du projet
 
 ## todo
 
+- style
+  - ne pas avoir d'erreur quand wallet connecté mais blockchain down
+  - mauvaise address de contrat target
 - writecontract
   - votingSession
 - readcontrat
