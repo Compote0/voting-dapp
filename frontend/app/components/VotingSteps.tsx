@@ -7,7 +7,7 @@ import {
     WinningProposal
 } from './index';
 import { useGlobalContext } from '../context/store';
-import WorkflowStatus from '../types/status-workflow';
+import { WorkflowStatus } from '../types/status-workflow';
 
 const VotingSteps = () => {
     const { currentWorkflowStep } = useGlobalContext();

@@ -14,16 +14,16 @@ export const VotingSession = () => {
 
 	return (
 		<>
-			<Heading>Voting Session</Heading>
+			<Heading color='#D0CEBA'>Voting Session</Heading>
 			{isVoter ? (
-				<Text>Please proceed to voting session</Text>
+				<Text color='#E9D2C0' mt={4}>Please proceed to voting session</Text>
 				/* TODO: list all proposals in a tab (ID | DESCRIPTION | VOTE COUNT) with a button to trigger setVote function of the contract with the id of the proposal */
 				/* TODO: when user voted, then refetch the user voter to get the hasVoted === true*/
 				/* TODO: when voter.hasVoted === true, disable all Vote buttons*/
 				/* TODO: show the proposalId voted*/
 			) : (
 				<>
-					<Text>The voters are currently in the process of voting session</Text>
+					<Text color='#E9D2C0' mt={4}>The voters are currently in the process of voting session</Text>
 					<Box boxSize='sm' mt={8}>
 						<MemeImage memeImageData={memeImageData} />
 					</Box>

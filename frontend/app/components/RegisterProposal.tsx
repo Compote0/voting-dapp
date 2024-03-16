@@ -74,7 +74,7 @@ export const RegisterProposal = () => {
         address: contractAddress,
         abi: contractAbi,
         functionName: 'addProposal',
-        args: [proposalDescription],
+        args: [proposalDescription.trim()],
       });
     } else {
       toast({

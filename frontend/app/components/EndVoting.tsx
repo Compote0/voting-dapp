@@ -14,9 +14,9 @@ export const EndVoting = () => {
 
 	return (
 		<>
-			<Heading>End Voting Session</Heading>
+			<Heading color='#D0CEBA'>End Voting Session</Heading>
 			{isVoter && (
-				<Text>Search a Voter</Text>
+				<Text color='#E9D2C0' mt={4}>Search a Voter</Text>
 				/* TODO: input address + submit button to display a voter*/
 				/* TODO: display a voter info CARD
 					+ address 
@@ -24,7 +24,7 @@ export const EndVoting = () => {
 					+ hasVoted 
 					+ proposalId*/
 			)}
-			<Text>The voting session has ended, vote tallying will start soon</Text>
+			<Text color='#E9D2C0' mt={4}>The voting session has ended, vote tallying will start soon</Text>
 			<Box boxSize='sm' mt={8}>
 				<MemeImage memeImageData={memeImageData} />
 			</Box>
