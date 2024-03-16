@@ -15,6 +15,7 @@ type globalContextType = {
 	isVoter: boolean;
 	events: VotingEvent[];
 	getEvents: () => void;
+	refetchVoterInfo: () => void;
 };
 const globalContextDefaultValues: globalContextType = {
 	currentWorkflowStep: 0,
@@ -23,6 +24,7 @@ const globalContextDefaultValues: globalContextType = {
 	isVoter: false,
 	events: [],
 	getEvents: () => { },
+	refetchVoterInfo: () => {},
 };
 const GlobalContext = createContext<globalContextType>(globalContextDefaultValues);
 
@@ -136,7 +138,8 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		isOwner: address === ownerAddress,
 		isVoter: isVoter,
 		events: events,
-		getEvents: getEvents
+		getEvents: getEvents,
+		refetchVoterInfo,
 	}
 
 	return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;

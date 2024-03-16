@@ -13,13 +13,16 @@ import {
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { contractAddress, contractAbi } from "@/app/constants";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { WorkflowStatusName, WorkflowStatus } from "@/app/types/status-workflow";
 
 const Workflow = () => {
   const { currentWorkflowStep, isOwner, refetchWorkflowStatus, getEvents } = useGlobalContext();
-
   const toast = useToast();
+  const currentWorkflowStepRef = useRef(currentWorkflowStep);
+  const refetchWorkflowStatusRef = useRef(refetchWorkflowStatus);
+  const getEventsRef = useRef(getEvents);
+  const toastRef = useRef(toast);
 
   const {
     data: hash,
@@ -29,7 +32,7 @@ const Workflow = () => {
   } = useWriteContract({
     mutation: {
       onSuccess: () => {
-        toast({
+        toastRef.current({
           title: "La transaction du changement de workflow",
           status: "success",
           duration: 3000,
@@ -37,7 +40,7 @@ const Workflow = () => {
         });
       },
       onError: (error) => {
-        toast({
+        toastRef.current({
           title: error.message,
           status: "error",
           duration: 3000,
@@ -46,6 +49,14 @@ const Workflow = () => {
       },
     },
   });
+  const errorRef = useRef(error);
+  useEffect(() => {
+    currentWorkflowStepRef.current = currentWorkflowStep;
+    refetchWorkflowStatusRef.current = refetchWorkflowStatus;
+    getEventsRef.current = getEvents;
+    toastRef.current = toast;
+    errorRef.current = error;
+  }, [currentWorkflowStep, refetchWorkflowStatus, getEvents, toast, error]);
 
   const moveToNextWorkflowStep = async () => {
     let functionName = '';
@@ -80,25 +91,24 @@ const Workflow = () => {
     }
   }
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash,
+  });
 
   useEffect(() => {
     if (isConfirmed) {
-      refetchWorkflowStatus();
-      getEvents();
-      toast({
-        title: `Le workflow a changé vers la step ${WorkflowStatusName[currentWorkflowStep + 1]}`,
+      refetchWorkflowStatusRef.current();
+      getEventsRef.current();
+      toastRef.current({
+        title: `Le workflow a changé vers la step ${WorkflowStatusName[currentWorkflowStepRef.current + 1]}`,
         status: "success",
         duration: 3000,
         isClosable: true,
       });
     }
-    if (error) {
-      toast({
-        title: error.message,
+    if (errorRef.current) {
+      toastRef.current({
+        title: errorRef.current.message,
         status: "error",
         duration: 3000,
         isClosable: true,
