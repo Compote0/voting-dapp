@@ -1,4 +1,4 @@
-enum WorkflowStatus {
+export enum WorkflowStatus {
 	RegisteringVoters,
 	ProposalsRegistrationStarted,
 	ProposalsRegistrationEnded,
@@ -6,8 +6,6 @@ enum WorkflowStatus {
 	VotingSessionEnded,
 	VotesTallied,
 }
-
-export default WorkflowStatus;
 
 export const WorkflowStatusName = [
 	"Registering Voters",

@@ -85,6 +85,24 @@ describe("Voting Tests", function () {
 				assert.equal(voteCount, 0);
 			});
 		});
+		describe("getProposals", function () {
+			it("should return a tab of proposals", async function () {
+				await voting.connect(owner).addVoter(addr1);
+				expect((await voting.connect(addr1).getProposals()).length).to.be.equal(
+					0
+				);
+
+				await voting.connect(owner).startProposalsRegistering();
+				expect((await voting.connect(addr1).getProposals()).length).to.be.equal(
+					1
+				);
+
+				await voting.connect(addr1).addProposal("first proposal");
+				expect((await voting.connect(addr1).getProposals()).length).to.be.equal(
+					2
+				);
+			});
+		});
 	});
 
 	describe("actions", function () {
@@ -163,6 +181,13 @@ describe("Voting Tests", function () {
 				await expect(voting.connect(addr1).addProposal("My first proposal"))
 					.to.emit(voting, "ProposalRegistered")
 					.withArgs(1);
+
+				const [description, voteCount] = await voting
+					.connect(addr1)
+					.getOneProposal(1);
+
+				assert.equal(description, "My first proposal");
+				assert.equal(voteCount, 0);
 			});
 		});
 
@@ -485,4 +510,6 @@ describe("Voting Tests", function () {
 			}
 		});
 	});
+
+	// todo: reset function
 });
