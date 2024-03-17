@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Heading, Text, Button, VStack, HStack, useToast } from '@chakra-ui/react';
+import { Heading, Text, Button, VStack, HStack, useToast, Alert, AlertIcon, AlertTitle, AlertDescription, } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { contractAddress, contractAbi } from '@/app/constants';
@@ -7,6 +7,8 @@ import { contractAddress, contractAbi } from '@/app/constants';
 export const VotingSession = () => {
 	const { isVoter, proposals, refetchVoterInfo } = useGlobalContext();
 	const [selectedProposalId, setSelectedProposalId] = useState<number | null>(null);
+	const [showAlert, setShowAlert] = useState(false);
+	const [votedProposalDescription, setVotedProposalDescription] = useState('');
 	const toast = useToast();
 	const toastRef = useRef(toast);
 	const errorRef = useRef<any>(null);
@@ -71,7 +73,20 @@ export const VotingSession = () => {
 	}, [isSuccess, refetchVoterInfo]);
 
 	const handleVote = (proposalId: number) => {
-		if (proposalId !== null) {
+		if (selectedProposalId !== null) {
+			toastRef.current({
+			  title: 'Already voted',
+			  description: `You already voted for: ${votedProposalDescription}`,
+			  status: 'warning',
+			  duration: 5000,
+			  isClosable: true,
+			});
+			return; 
+		  }
+		if (proposalId !== null && proposals) {
+			const selectedProposal = proposals[proposalId];
+			setVotedProposalDescription(selectedProposal.description);
+			setShowAlert(true);
 			setSelectedProposalId(proposalId);
 			writeContract({
 				args: [proposalId],
@@ -94,8 +109,8 @@ export const VotingSession = () => {
 		<>
 			<Heading color='#D0CEBA'>Voting Session</Heading>
 			{isVoter ? (
-				<VStack spacing={4} align='stretch'>
-					<Text color='#E9D2C0' mt={4}>Please proceed to voting session</Text>
+				<VStack spacing='4' align='stretch'>
+					<Text color='#E9D2C0' mt='4'>Please proceed to voting session</Text>
 					{proposals?.length !== 0 && proposals?.map((proposal, index) => (
 						<HStack key={crypto.randomUUID()} justifyContent="space-between">
 							<Text color='#D0CEBA'>{index} | {proposal.description} | Votes: {Number(proposal.voteCount)}</Text>
@@ -110,12 +125,16 @@ export const VotingSession = () => {
 							</Button>
 						</HStack>
 					))}
-					{selectedProposalId !== null && (
-						<Text color='#E9D2C0' mt={4}>You voted for proposal ID: {selectedProposalId}</Text>
+					{showAlert && (
+						<Alert status="info" variant="left-accent" mt='4'>
+						<AlertIcon />
+						<AlertTitle mr='2'>You voted for : </AlertTitle>
+						<AlertDescription>{votedProposalDescription}</AlertDescription>
+						</Alert>
 					)}
 				</VStack>
 			) : (
-				<Text color='#E9D2C0' mt={4}>The voters are currently in the process of voting session</Text>
+				<Text color='#E9D2C0' mt='4'>The voters are currently in the process of voting session</Text>
 			)}
 		</>
 	);
