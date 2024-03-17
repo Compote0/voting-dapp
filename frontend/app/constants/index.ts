@@ -182,6 +182,31 @@ export const contractAbi = [
 		type: "function",
 	},
 	{
+		inputs: [],
+		name: "getProposals",
+		outputs: [
+			{
+				components: [
+					{
+						internalType: "string",
+						name: "description",
+						type: "string",
+					},
+					{
+						internalType: "uint256",
+						name: "voteCount",
+						type: "uint256",
+					},
+				],
+				internalType: "struct Voting.Proposal[]",
+				name: "",
+				type: "tuple[]",
+			},
+		],
+		stateMutability: "view",
+		type: "function",
+	},
+	{
 		inputs: [
 			{
 				internalType: "address",

@@ -5,6 +5,9 @@ import { useReadContract, useAccount } from "wagmi";
 import { parseAbiItem } from "viem";
 import { publicClient } from "@/app/utils/client";
 import Voter from "../types/voter";
+import { Proposal } from "../types/proposal";
+import { parseAbiItem } from "viem";
+import { VotingEvent } from "../components/Events";
 import { WorkflowStatusName } from "../types/status-workflow";
 import { Event } from "../types/event";
 import { shortenAddress } from "../utils/utilsFunctions";
@@ -17,6 +20,10 @@ type globalContextType = {
 	events: Event[];
 	getEvents: () => void;
 	refetchVoterInfo: () => void;
+	proposals: Proposal[];
+	proposalId: number;
+	refetchProposalId: () => void;
+	refetchAllProposals: () => void;
 };
 const globalContextDefaultValues: globalContextType = {
 	currentWorkflowStep: 0,
@@ -26,6 +33,10 @@ const globalContextDefaultValues: globalContextType = {
 	events: [],
 	getEvents: () => { },
 	refetchVoterInfo: () => { },
+	proposals: [],
+	proposalId: 0,
+	refetchProposalId: () => { },
+	refetchAllProposals: async () => { },
 };
 const GlobalContext = createContext<globalContextType>(globalContextDefaultValues);
 
@@ -37,6 +48,7 @@ type Props = {
 
 export const GlobalContextProvider = ({ children }: Props) => {
 	const { address } = useAccount();
+	const [proposals, setProposals] = useState<Proposal[]>([]);
 
 	// --- read and refetch workflowStatusStep, ownerAddress, voterInfo
 	//
@@ -74,6 +86,33 @@ export const GlobalContextProvider = ({ children }: Props) => {
 	});
 
 	const isVoter = (voterInfo as Voter)?.isRegistered === true;
+
+
+	// --- read and refetch proposals //
+
+	const {
+		data: proposalIdData,
+		isPending: pendingproposalId,
+		refetch: refetchProposalId,
+	} = useReadContract({
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: "getOneProposal",
+		account: address,
+	});
+
+	const proposalId = typeof proposalIdData === 'number' ? proposalIdData : 0;
+
+	const {
+		data: allProposals,
+		isPending: pedingAllProposals,
+		refetch: refetchAllProposals,
+	} = useReadContract({
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: "getProposals",
+		account: address,
+	});
 
 	// --- read and refetch events
 	//
@@ -175,6 +214,10 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		events: events,
 		getEvents: getEvents,
 		refetchVoterInfo,
+		proposals: allProposals as Proposal[],
+		proposalId,
+		refetchAllProposals: refetchAllProposals,
+		refetchProposalId: refetchProposalId,
 	}
 
 	return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
