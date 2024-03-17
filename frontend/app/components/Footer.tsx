@@ -10,7 +10,7 @@ const Footer = () => {
         alignItems="center"
     >
         <Text fontSize="sm" color="#D0CEBA">
-          © 2023 Voting Dapp. All rights reserved. &copy; Alyra {new Date().getFullYear()}
+          © Voting Dapp. All rights reserved. &copy; Alyra {new Date().getFullYear()}
           </Text>
     </Flex>
   )
