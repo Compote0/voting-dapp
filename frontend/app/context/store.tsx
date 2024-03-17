@@ -45,6 +45,7 @@ type Props = {
 };
 
 export const GlobalContextProvider = ({ children }: Props) => {
+	const [isBlockchainAccessible, setIsBlockchainAccessible] = useState(true);
 	const { address } = useAccount();
 	const [proposals, setProposals] = useState<Proposal[]>([]);
 

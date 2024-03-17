@@ -6,7 +6,6 @@ import Workflow from './Workflow';
 import { useAccount } from "wagmi";
 import BlockchainStatus from './BlockchainStatus';
 import VerifyContractAddress from './VerifyContractAddress';
-import { contractAddress } from '@/app/constants';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -25,7 +24,7 @@ const Layout = ({ children }: LayoutProps) => {
     >
       <Header />
       <BlockchainStatus /> 
-      <VerifyContractAddress contractAddress={contractAddress} />
+      <VerifyContractAddress />
       {isConnected && <Workflow />}      
       <Flex
         grow="1"

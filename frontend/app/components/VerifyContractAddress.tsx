@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { publicClient } from "@/app/utils/client";
-import { Alert, AlertIcon } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box } from '@chakra-ui/react';
 import { toHex } from 'viem';
+import { contractAddress } from '@/app/constants'; 
 
-interface VerifyContractAddressProps {
-    contractAddress: string;
-}
-
-const VerifyContractAddress = ({ contractAddress }: VerifyContractAddressProps) => {
+const VerifyContractAddress = () => {
     const [isContractValid, setIsContractValid] = useState(true);
 
     useEffect(() => {
@@ -25,14 +22,16 @@ const VerifyContractAddress = ({ contractAddress }: VerifyContractAddressProps) 
             }
         };
         checkContractValidity();
-    }, [contractAddress]);
+    }, []);
 
     if (!isContractValid) {
         return (
-            <Alert status="error">
-                <AlertIcon />
-                L'adresse du contrat est invalide ou le contrat n'existe pas sur le réseau actuel.
-            </Alert>
+            <Box p="4">
+                <Alert status="error">
+                    <AlertIcon />
+                    L&apos;adresse du contrat est invalide ou le contrat n&apos;existe pas sur le réseau actuel.
+                </Alert>
+            </Box>
         );
     }
 
