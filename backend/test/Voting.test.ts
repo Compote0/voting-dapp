@@ -608,5 +608,34 @@ describe("Voting Tests", function () {
 		});
 	});
 
-	// todo: reset function
-});
+	// TEST: reset function
+	describe("reset", function () {
+		it("should revert when called by non-owner", async function () {
+			const { voting, addr1 } = await loadFixture(deployVotingContract);
+			await expect(voting.connect(addr1).reset())
+				.to.be.revertedWithCustomError(voting, "OwnableUnauthorizedAccount")
+				.withArgs(addr1.address);
+		});
+	
+		it("should reset the contract to initial state", async function () {
+			const { voting, owner, addr1 } = await loadFixture(deployVotingContract);
+		
+			// Setup initial state
+			await voting.connect(owner).addVoter(addr1.address);
+			await voting.connect(owner).startProposalsRegistering();
+			await voting.connect(addr1).addProposal("A valid proposal");
+			await voting.connect(owner).endProposalsRegistering();
+			await voting.connect(owner).startVotingSession();
+			await voting.connect(addr1).setVote(1);
+			await voting.connect(owner).endVotingSession();
+			await voting.connect(owner).tallyVotes();
+		
+			// Reset the contract
+			await voting.connect(owner).reset();
+		
+			// Verify contract state is reset
+			expect(await voting.winningProposalID()).to.equal(0);
+			expect(await voting.workflowStatus()).to.equal(0); // Assuming 0 is RegisteringVoters
+		});		
+	});
+});	
