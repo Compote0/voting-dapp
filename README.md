@@ -39,17 +39,8 @@ Voici la liste de la stack utilisée pour la réalisation du projet
 ## todo
 
 - style
-  - ne pas avoir d'erreur quand wallet connecté mais blockchain down
-  - mauvaise address de contrat target
-- writecontract
-  - votingSession
-- readcontrat
-  - winningproposal (3)
-- events (independent)
-  - ProposalRegistered
-  - Voted
-- testing
-  - add fixture & beforeEach
-  - reset function test
+  - gifs description
+  - 1/2 : ne pas avoir d'erreur quand wallet connecté mais blockchain down
 - setup sepolia chain (4)
 - deploy on vercel (5)
+
