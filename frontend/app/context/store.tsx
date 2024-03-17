@@ -6,8 +6,6 @@ import { parseAbiItem } from "viem";
 import { publicClient } from "@/app/utils/client";
 import Voter from "../types/voter";
 import { Proposal } from "../types/proposal";
-import { parseAbiItem } from "viem";
-import { VotingEvent } from "../components/Events";
 import { WorkflowStatusName } from "../types/status-workflow";
 import { Event } from "../types/event";
 import { shortenAddress } from "../utils/utilsFunctions";
