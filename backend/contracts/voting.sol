@@ -38,7 +38,7 @@ contract Voting is Ownable {
     event VoterRegistered(address voterAddress); 
     event WorkflowStatusChange(WorkflowStatus previousStatus, WorkflowStatus newStatus);
     event ProposalRegistered(uint proposalId);
-    event Voted (address voter, uint proposalId);
+    event Voted(address voter, uint proposalId);
 
     constructor() Ownable(msg.sender) {    }
     
