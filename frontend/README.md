@@ -38,6 +38,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## Heplers
 
 - [Manage nextjs context in typescript](https://dev.to/shareef/context-api-with-typescript-and-next-js-2m25)
+- [Confetti](https://www.npmjs.com/package/react-confetti)
 
 ## React structure
 
