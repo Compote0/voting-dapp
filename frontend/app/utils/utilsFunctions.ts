@@ -1,4 +1,6 @@
-export function shortenAddress(address: `0x${string}` | undefined): string {
+export function shortenAddress(
+	address: `0x${string}` | string | undefined
+): string {
 	if (address === undefined) return "undefined";
 
 	if (address.length === 0) {

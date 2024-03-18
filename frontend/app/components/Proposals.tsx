@@ -11,7 +11,7 @@ import {
     Th,
     Td,
     TableContainer,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 import { Proposal } from '../types/proposal';
 
 interface ProposalsProps {
