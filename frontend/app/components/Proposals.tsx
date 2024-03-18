@@ -85,7 +85,7 @@ const Proposals = ({ canVote }: ProposalsProps) => {
             refetchVoterInfo();
             getEvents();
             toast({
-                title: `You voted for the proposal ${voterInfo.votedProposalId}!`,
+                title: `You voted for the proposal ${Number(voterInfo.votedProposalId) + 2}!`,
                 status: "success",
                 duration: 3000,
                 isClosable: true,
