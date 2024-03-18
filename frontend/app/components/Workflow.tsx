@@ -17,7 +17,7 @@ import { useEffect, useRef } from "react";
 import { WorkflowStatusName, WorkflowStatus } from "@/app/types/status-workflow";
 
 const Workflow = () => {
-  const { currentWorkflowStep, isOwner, refetchWorkflowStatus, getEvents } = useGlobalContext();
+  const { currentWorkflowStep, isOwner, refetchWorkflowStatus, getEvents, refetchVoterInfo } = useGlobalContext();
   const toast = useToast();
   const currentWorkflowStepRef = useRef(currentWorkflowStep);
   const refetchWorkflowStatusRef = useRef(refetchWorkflowStatus);
@@ -98,6 +98,10 @@ const Workflow = () => {
   useEffect(() => {
     if (isConfirmed) {
       refetchWorkflowStatusRef.current();
+      if (currentWorkflowStep === WorkflowStatus.ProposalsRegistrationStarted) {
+        // in case owner become a voter, we need check it so he can add proposal
+        refetchVoterInfo();
+      }
       getEventsRef.current();
       toastRef.current({
         title: `Le workflow a changé vers la step ${WorkflowStatusName[currentWorkflowStepRef.current + 1]}`,
