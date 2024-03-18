@@ -7,7 +7,7 @@ https://www.loom.com/share/0612121444484927a82d6c9ebe39d3eb
 
 Lien Déploiement: https://voting-dapp-ten-blush.vercel.app
 
-Déployé sur sépolia
+Déployé sur sépolia : 0x35312cf73B9d7361470eDDBdfd0E2EA887AD932C
 
 Groupe constitué de :  
 Léo-Paul MARTIN et  
@@ -15,7 +15,7 @@ Pierre Orgeret
 
 ## Détails
 
-### Contract
+### Contract 
 
 La faille a été corrigé comme suit: nombre maximum de proposal 5
 
