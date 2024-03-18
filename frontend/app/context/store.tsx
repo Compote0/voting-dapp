@@ -82,9 +82,10 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		functionName: "getVoter",
 		account: address,
 		args: [address],
-	});
+	}) ;
 
-	const isVoter = (voterInfo as Voter)?.isRegistered === true;
+	
+	const isVoter = ((voterInfo as unknown) as Voter)?.isRegistered === true;
 
 	// --- read and refetch proposals //
 
@@ -209,7 +210,7 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		refetchWorkflowStatus: refetchWorkflowStatus,
 		isOwner: address === ownerAddress,
 		isVoter: isVoter,
-		voterInfo,
+		voterInfo: voterInfo as Voter,
 		refetchVoterInfo,
 		events: events,
 		getEvents: getEvents,
