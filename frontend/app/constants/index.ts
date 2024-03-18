@@ -1,4 +1,5 @@
-export const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "";
+import { getAddress } from "viem";
+export const contractAddress = getAddress(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as string) || undefined;
 export const contractAbi = [
 	{
 		inputs: [],
