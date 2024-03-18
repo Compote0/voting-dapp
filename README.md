@@ -30,8 +30,9 @@ Niveaux bonnes pratiques nous avons fait ceci:
     - automatiser la demo
   - backend script dans le package.json pour run les commandes hardhat (compile, test, coverage, node, deploy, proposal, reset)
   - backend test coverage 100% statement, branches, functions and lines
-- fronted
+- frontend
   - react context
+  - message d'alerte quand blockchain down/contract not deployed
   - variable d'environnement pour update les variables importante depuis vercel sans update le code
     - contract address
     - numero de block de deploiement (debut d'ecoute des events)

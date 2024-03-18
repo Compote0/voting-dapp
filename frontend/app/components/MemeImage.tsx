@@ -15,7 +15,7 @@ const MemeImage = ({ memeImageData }: MemeImageProps) => {
     return (
         <>
             <Image src={memeImageData.src} alt={memeImageData.alt} />
-            <Text>
+            <Text fontSize='xs'>
                 <a href={memeImageData.gifURL}>
                     {memeImageData.description}
                 </a>
