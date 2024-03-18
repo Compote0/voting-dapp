@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import MemeImage, { MemeImageType } from './MemeImage';
-import { Heading, Text, useToast, Button, Input, Box, Flex } from '@chakra-ui/react';
+import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { contractAddress, contractAbi } from '@/app/constants/index';
 
 export const RegisterProposal = () => {
-  const { isVoter } = useGlobalContext();
+  const { isVoter, getEvents } = useGlobalContext();
   const [proposalDescription, setProposalDescription] = useState('');
   const toast = useToast();
   const toastRef = useRef(toast);
@@ -56,6 +56,7 @@ export const RegisterProposal = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      getEvents();
       toastRef.current({
         title: 'Proposal registration is confirmed',
         status: 'success',
@@ -98,25 +99,25 @@ export const RegisterProposal = () => {
       {isVoter ? (
         <>
           <Text color='#D0CEBA' mb={4}>Please proceed to proposal registration</Text>
-          <Flex>
-            <Input
-              placeholder="Enter proposal's description"
-              value={proposalDescription}
-              onChange={(e) => setProposalDescription(e.target.value)}
-              mr={4}
-              color='#E9D2C0'
-            />
-            <Button
-              onClick={handleAddProposalClick}
-              isLoading={isPending}
-              loadingText="Registering..."
-              colorScheme="teal"
-              variant="solid"
-              w={250}
-            >
-              Register Proposal
-            </Button>
-          </Flex>
+          <Input
+            placeholder="Enter proposal's description"
+            value={proposalDescription}
+            onChange={(e) => setProposalDescription(e.target.value)}
+            mr={4}
+            color='#E9D2C0'
+          />
+          <Button
+            onClick={handleAddProposalClick}
+            isLoading={isPending}
+            isDisabled={proposalDescription.length === 0}
+            loadingText="Registering..."
+            colorScheme="teal"
+            variant="solid"
+            mt={4}
+            w={250}
+          >
+            Register Proposal
+          </Button>
         </>
       ) : (
         <>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-    Box, Button, Flex, Input, useToast,
+    Box, Button, Input, useToast,
     Table,
     Thead,
     Tbody,
@@ -28,7 +28,7 @@ const SearchVoter = () => {
     const toast = useToast();
 
     const handleSearchVoterClick = async () => {
-        if (isAddress(voterAddress)) {
+        if (isAddress(voterAddress.trim())) {
             const readVoter = await publicClient.readContract({
                 address: contractAddress,
                 abi: contractAbi,
@@ -62,24 +62,23 @@ const SearchVoter = () => {
     return (
         <>
             <Box mb={4}>
-                <Flex>
-                    <Input
-                        placeholder="Enter voter's address"
-                        value={voterAddress}
-                        onChange={(e) => setVoterAddress(e.target.value)}
-                        mr={4}
-                        color='#E9D2C0'
-                    />
-                    <Button
-                        onClick={handleSearchVoterClick}
-                        isDisabled={voterAddress.length === 0}
-                        loadingText="Searching..."
-                        colorScheme="teal"
-                        variant="solid"
-                    >
-                        Search Voter
-                    </Button>
-                </Flex>
+                <Input
+                    placeholder="Enter voter's address"
+                    value={voterAddress}
+                    onChange={(e) => setVoterAddress(e.target.value)}
+                    mr={4}
+                    color='#E9D2C0'
+                />
+                <Button
+                    onClick={handleSearchVoterClick}
+                    isDisabled={voterAddress.length === 0}
+                    loadingText="Searching..."
+                    colorScheme="teal"
+                    variant="solid"
+                    mt={4}
+                >
+                    Search Voter
+                </Button>
             </Box>
             <Box>
                 {voters?.length !== 0 &&
