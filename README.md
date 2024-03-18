@@ -15,14 +15,14 @@ Pierre Orgeret
 
 ## Détails
 
-### Contract 
+### Contract
 
 La faille a été corrigé comme suit: nombre maximum de proposal 5
 
 Niveaux bonnes pratiques nous avons fait ceci:
 
 - overall
-  - bon partage des taches (contrat test, frontend voting step)
+  - bon partage des taches (contrat + test, frontend voting steps, deploiement)
   - frontend et backend en typescript
 - backend
   - backend scripts
@@ -35,15 +35,19 @@ Niveaux bonnes pratiques nous avons fait ceci:
   - backend test coverage 100% statement, branches, functions and lines, utilisation de fixture et loadFixture partout
 - frontend
   - react context
+  - [colors](https://coolors.co/1f2041-4b3f72-417b5a-d0ceba-e9d2c0)
   - message d'alerte quand blockchain down/contract not deployed ou mauvais contrat target
   - variable d'environnement pour update les variables importante depuis vercel sans update le code
     - contract address
     - numero de block de deploiement (debut d'ecoute des events)
     - projectId de walletConnect
+    - rpc url Sepolia
 
 ### Testing
 
-backend: bonnes pratiques + test coverage 100% statement, branches, functions and lines, utilisation de fixture et loadFixture partout
+- backend
+  - coverage 100% statement, branches, functions and lines
+  - utilisation de fixture et loadFixture partout
 
 ### Front
 
