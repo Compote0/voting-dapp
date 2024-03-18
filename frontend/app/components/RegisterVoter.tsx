@@ -4,6 +4,7 @@ import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { contractAddress, contractAbi } from '@/app/constants/index';
+import { isAddress } from 'viem';
 
 export const RegisterVoter = () => {
   const [voterAddress, setVoterAddress] = useState('');
@@ -11,7 +12,7 @@ export const RegisterVoter = () => {
   const toast = useToast();
   const toastRef = useRef(toast);
   const errorRef = useRef<any | null>(null);
-  const getEventsRef = useRef(getEvents); 
+  const getEventsRef = useRef(getEvents);
 
   const {
     data: hash,
@@ -66,10 +67,10 @@ export const RegisterVoter = () => {
         isClosable: true,
       });
     }
-  }, [isSuccess]); 
+  }, [isSuccess]);
 
   const handleAddVoterClick = async () => {
-    if (voterAddress.trim()) {
+    if (isAddress(voterAddress.trim())) {
       writeContract({
         address: contractAddress,
         abi: contractAbi,
@@ -77,8 +78,8 @@ export const RegisterVoter = () => {
         args: [voterAddress.trim()],
       });
     } else {
-      toastRef.current({
-        title: 'Please enter a valid address',
+      toast({
+        title: `Couldn't read the voter address ${voterAddress}`,
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -95,24 +96,26 @@ export const RegisterVoter = () => {
 
   return (
     <>
-      <Heading color='#D0CEBA'>Register Voter</Heading>
+      <Heading color='#D0CEBA' mb={4}>Register Voter</Heading>
       {isOwner ? (
         <>
-          <Text color='#D0CEBA'>Please proceed to voter registration</Text>
+          <Text color='#D0CEBA' mb={4}>Please proceed to voter registration</Text>
           <Input
             placeholder="Enter voter's address"
             value={voterAddress}
             onChange={(e) => setVoterAddress(e.target.value)}
-            mt={4}
+            mr={4}
             color='#E9D2C0'
           />
           <Button
             onClick={handleAddVoterClick}
             isLoading={isPending}
+            isDisabled={voterAddress.length === 0}
             loadingText="Registering..."
             colorScheme="teal"
             variant="solid"
             mt={4}
+            w={250}
           >
             Register Voter
           </Button>
