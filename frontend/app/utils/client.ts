@@ -1,7 +1,8 @@
-import { createPublicClient, http } from 'viem'
-import { hardhat } from 'viem/chains'
+import { createPublicClient, http } from "viem";
+import { sepolia } from "./sepolia";
+// import { hardhat } from 'viem/chains'
 
-export const publicClient = createPublicClient({ 
-  chain: hardhat,
-  transport: http()
-})
+export const publicClient = createPublicClient({
+	chain: sepolia,
+	transport: http(),
+});

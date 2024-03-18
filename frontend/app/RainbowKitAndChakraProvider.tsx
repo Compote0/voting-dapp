@@ -15,13 +15,14 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { ReactNode } from 'react';
+import { sepolia } from './utils/sepolia';
 
 const WALLETCONNECT_PROJECTID = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECTID || "";
 
 const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: WALLETCONNECT_PROJECTID,
-  chains: [hardhat],
+  chains: [sepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
