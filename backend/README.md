@@ -98,6 +98,7 @@ yarn hardhat run ./scripts/deploy.ts --network sepolia
     - should return GENESIS proposal
     - should return a first proposal
   - getProposals
+    - should revert when not a voter
     - should return a tab of proposals (43ms)
 - actions
   - addVoter
@@ -143,6 +144,16 @@ yarn hardhat run ./scripts/deploy.ts --network sepolia
     - should have the first proposal win when one proposal done and vote for it 0-2 (49ms)
       transaction with no receive/fallback function
     - shoud revert when send eth to the contract
+- reset
+  - reset workflow
+    - should revert when called by non-owner
+    - should reset the contract to initial state (62ms)
+  - reset voters
+    - should revert when not owner
+    - should revert when workflow status is not RegisteringVoters
+    - should revert when voter has not beed registered yet
+    - should reset voter when just registered
+    - should reset voter when voted and workflow is restarting (76ms)
 
 44 passing (2s)
 

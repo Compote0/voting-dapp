@@ -6,7 +6,10 @@ async function main() {
 	const [owner] = await ethers.getSigners();
 
 	// get voting contrat deployed
-	const voting = await ethers.getContractAt(interaceName, CONTRACT_ADDRESS);
+	const voting = await (ethers as any).getContractAt(
+		interaceName,
+		CONTRACT_ADDRESS
+	);
 
 	// --- step 1 - add owner as voter
 	// comment if voter already added

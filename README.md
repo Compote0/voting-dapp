@@ -18,9 +18,24 @@ La faille a été corrigé comme suit: nombre maximum de proposal 5
 
 Niveaux bonnes pratiques nous avons fait ceci:
 
-- react context
-- backend script pour deployer, voir la liste des proposals, reset le workflow/clear proposals, update le workflow manually
-- backend script dans le package.json pour run les commandes hardhat (compile, test, coverage, node, deploy, proposal, reset)
+- overall
+  - bon partage des taches (contrat test, frontend voting step)
+  - frontend et backend en typescript
+- backend
+  - backend scripts
+    - deployer contrat
+    - voir la liste des proposals
+    - reset le workflow/clear proposals et voters
+    - update le workflow manually
+    - automatiser la demo
+  - backend script dans le package.json pour run les commandes hardhat (compile, test, coverage, node, deploy, proposal, reset)
+  - backend test coverage 100% statement, branches, functions and lines
+- fronted
+  - react context
+  - variable d'environnement pour update les variables importante depuis vercel sans update le code
+    - contract address
+    - numero de block de deploiement (debut d'ecoute des events)
+    - projectId de walletConnect
 
 ### Testing
 
@@ -43,4 +58,3 @@ Voici la liste de la stack utilisée pour la réalisation du projet
   - 1/2 : ne pas avoir d'erreur quand wallet connecté mais blockchain down
 - setup sepolia chain (4)
 - deploy on vercel (5)
-

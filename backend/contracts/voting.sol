@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.20;
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-
 contract Voting is Ownable {
-
 
     uint public winningProposalID;
     
@@ -91,7 +89,7 @@ contract Voting is Ownable {
 
     // ::::::::::::: VOTE ::::::::::::: //
 
-    function setVote( uint _id) external onlyVoters {
+    function setVote(uint _id) external onlyVoters {
         require(workflowStatus == WorkflowStatus.VotingSessionStarted, 'Voting session havent started yet');
         require(voters[msg.sender].hasVoted != true, 'You have already voted');
         require(_id < proposalsArray.length, 'Proposal not found'); // pas obligé, et pas besoin du >0 car uint
@@ -150,7 +148,6 @@ contract Voting is Ownable {
     }
 
     function reset() external onlyOwner {
-        // require(workflowStatus == WorkflowStatus.VotesTallied, "Votes are not tallied yet");
         winningProposalID = 0;
 
         // empty proposal tab
@@ -165,5 +162,12 @@ contract Voting is Ownable {
         // reset workflowStatus
         workflowStatus = WorkflowStatus.RegisteringVoters;
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.RegisteringVoters);
+    }
+
+    function resetVoter(address _addr) external onlyOwner {
+        require(workflowStatus == WorkflowStatus.RegisteringVoters, 'Voting flow has already started');
+        require(voters[_addr].isRegistered != false, 'Not registered yet');
+    
+        delete voters[_addr];
     }
 }

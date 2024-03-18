@@ -5,7 +5,10 @@ async function main() {
 	const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 	const [owner] = await ethers.getSigners();
 
-	const voting = await ethers.getContractAt(interaceName, CONTRACT_ADDRESS);
+	const voting = await (ethers as any).getContractAt(
+		interaceName,
+		CONTRACT_ADDRESS
+	);
 
 	// change the connect signer if owner is not a voter
 	const proposalsArray = await voting.connect(owner).getProposals();
