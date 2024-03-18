@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import MemeImage, { MemeImageType } from './MemeImage';
-import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
+import { Heading, Text, useToast, Button, Input, Box, Flex } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { contractAddress, contractAbi } from '@/app/constants/index';
@@ -11,7 +11,7 @@ export const RegisterVoter = () => {
   const toast = useToast();
   const toastRef = useRef(toast);
   const errorRef = useRef<any | null>(null);
-  const getEventsRef = useRef(getEvents); 
+  const getEventsRef = useRef(getEvents);
 
   const {
     data: hash,
@@ -66,7 +66,7 @@ export const RegisterVoter = () => {
         isClosable: true,
       });
     }
-  }, [isSuccess]); 
+  }, [isSuccess]);
 
   const handleAddVoterClick = async () => {
     if (voterAddress.trim()) {
@@ -95,27 +95,28 @@ export const RegisterVoter = () => {
 
   return (
     <>
-      <Heading color='#D0CEBA'>Register Voter</Heading>
+      <Heading color='#D0CEBA' mb={4}>Register Voter</Heading>
       {isOwner ? (
         <>
-          <Text color='#D0CEBA'>Please proceed to voter registration</Text>
-          <Input
-            placeholder="Enter voter's address"
-            value={voterAddress}
-            onChange={(e) => setVoterAddress(e.target.value)}
-            mt={4}
-            color='#E9D2C0'
-          />
-          <Button
-            onClick={handleAddVoterClick}
-            isLoading={isPending}
-            loadingText="Registering..."
-            colorScheme="teal"
-            variant="solid"
-            mt={4}
-          >
-            Register Voter
-          </Button>
+          <Text color='#D0CEBA' mb={4}>Please proceed to voter registration</Text>
+          <Flex>
+            <Input
+              placeholder="Enter voter's address"
+              value={voterAddress}
+              onChange={(e) => setVoterAddress(e.target.value)}
+              mr={4}
+              color='#E9D2C0'
+            />
+            <Button
+              onClick={handleAddVoterClick}
+              isLoading={isPending}
+              loadingText="Registering..."
+              colorScheme="teal"
+              variant="solid"
+            >
+              Register Voter
+            </Button>
+          </Flex>
         </>
       ) : (
         <>

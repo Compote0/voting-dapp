@@ -104,7 +104,7 @@ const Proposals = ({ canVote }: ProposalsProps) => {
     return (
         <>
             {voterInfo.hasVoted && (
-                <Alert status="info" variant="left-accent" mt='4'>
+                <Alert status="info" variant="left-accent" mb={4}>
                     <AlertIcon />
                     <AlertTitle mr='2'>You voted for : </AlertTitle>
                     <AlertDescription>{(Number(voterInfo.votedProposalId) + 1).toString()}</AlertDescription>

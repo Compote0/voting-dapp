@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import MemeImage, { MemeImageType } from './MemeImage';
-import { Heading, Text, useToast, Button, Input, Box } from '@chakra-ui/react';
+import { Heading, Text, useToast, Button, Input, Box, Flex } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/store';
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { contractAddress, contractAbi } from '@/app/constants/index';
@@ -94,27 +94,29 @@ export const RegisterProposal = () => {
 
   return (
     <>
-      <Heading color='#D0CEBA'>Register Proposal</Heading>
+      <Heading color='#D0CEBA' mb={4}>Register Proposal</Heading>
       {isVoter ? (
         <>
-          <Text color='#D0CEBA'>Please proceed to proposal registration</Text>
-          <Input
-            placeholder="Enter proposal's description"
-            value={proposalDescription}
-            onChange={(e) => setProposalDescription(e.target.value)}
-            mt={4}
-            color='#E9D2C0'
-          />
-          <Button
-            onClick={handleAddProposalClick}
-            isLoading={isPending}
-            loadingText="Registering..."
-            colorScheme="teal"
-            variant="solid"
-            mt={4}
-          >
-            Register Proposal
-          </Button>
+          <Text color='#D0CEBA' mb={4}>Please proceed to proposal registration</Text>
+          <Flex>
+            <Input
+              placeholder="Enter proposal's description"
+              value={proposalDescription}
+              onChange={(e) => setProposalDescription(e.target.value)}
+              mr={4}
+              color='#E9D2C0'
+            />
+            <Button
+              onClick={handleAddProposalClick}
+              isLoading={isPending}
+              loadingText="Registering..."
+              colorScheme="teal"
+              variant="solid"
+              w={250}
+            >
+              Register Proposal
+            </Button>
+          </Flex>
         </>
       ) : (
         <>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Box, Button, Input, useToast } from "@chakra-ui/react";
 import {
+    Box, Button, Flex, Input, useToast,
     Table,
     Thead,
     Tbody,
@@ -8,12 +8,13 @@ import {
     Th,
     Td,
     TableContainer,
-} from '@chakra-ui/react'; import { useAccount } from "wagmi";
+} from '@chakra-ui/react';
+import { useAccount } from "wagmi";
 import { contractAddress, contractAbi } from "@/app/constants";
 import Voter from '../types/voter';
 import { publicClient } from '../utils/client';
 import { shortenAddress } from '../utils/utilsFunctions';
-import { isAddress } from 'viem'
+import { isAddress } from 'viem';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 interface ExtendedVoter extends Voter {
@@ -61,23 +62,24 @@ const SearchVoter = () => {
     return (
         <>
             <Box mb={4}>
-                <Input
-                    placeholder="Enter voter's address"
-                    value={voterAddress}
-                    onChange={(e) => setVoterAddress(e.target.value)}
-                    mt={4}
-                    color='#E9D2C0'
-                />
-                <Button
-                    onClick={handleSearchVoterClick}
-                    isDisabled={voterAddress.length === 0}
-                    loadingText="Searching..."
-                    colorScheme="teal"
-                    variant="solid"
-                    mt={4}
-                >
-                    Search Voter
-                </Button>
+                <Flex>
+                    <Input
+                        placeholder="Enter voter's address"
+                        value={voterAddress}
+                        onChange={(e) => setVoterAddress(e.target.value)}
+                        mr={4}
+                        color='#E9D2C0'
+                    />
+                    <Button
+                        onClick={handleSearchVoterClick}
+                        isDisabled={voterAddress.length === 0}
+                        loadingText="Searching..."
+                        colorScheme="teal"
+                        variant="solid"
+                    >
+                        Search Voter
+                    </Button>
+                </Flex>
             </Box>
             <Box>
                 {voters?.length !== 0 &&
@@ -88,7 +90,7 @@ const SearchVoter = () => {
                                     <Th color='#D0CEBA'>Address</Th>
                                     <Th color='#D0CEBA'>is Registered</Th>
                                     <Th color='#D0CEBA'>has Voted</Th>
-                                    <Th color='#D0CEBA' isNumeric w="80px">Vote</Th>
+                                    <Th color='#D0CEBA' isNumeric>Voted Proposal</Th>
                                 </Tr>
                             </Thead>
                             <Tbody color='#D0CEBA'>
