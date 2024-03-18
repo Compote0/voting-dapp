@@ -53,7 +53,7 @@ const Proposals = ({ canVote }: ProposalsProps) => {
         if (voterInfo.hasVoted) {
             toast({
                 title: 'Already voted',
-                description: `You already voted for: ${voterInfo.votedProposalId}`,
+                description: `You already voted for: ${(Number(voterInfo.votedProposalId) + 1).toString()}`,
                 status: 'warning',
                 duration: 5000,
                 isClosable: true,
@@ -124,9 +124,9 @@ const Proposals = ({ canVote }: ProposalsProps) => {
                             proposals?.length !== 0 &&
                             proposals?.map((proposal: Proposal, index) => (
                                 <Tr key={crypto.randomUUID()}>
-                                    <Td isNumeric>{index}</Td>
+                                    <Td isNumeric>{index + 1}</Td>
                                     <Td>{proposal.description}</Td>
-                                    <Td >
+                                    <Td>
                                         {canVote ? (
                                             <Button
                                                 colorScheme="teal"
@@ -136,10 +136,9 @@ const Proposals = ({ canVote }: ProposalsProps) => {
                                                 isDisabled={isSuccess || voterInfo.hasVoted}
                                             >Vote</Button>
                                         ) : (
-                                            <>
-                                                {proposal.voteCount.toString()}
-                                            </>
-                                        )}</Td>
+                                            <>{proposal.voteCount.toString()}</>
+                                        )}
+                                    </Td>
                                 </Tr>
                             ))
                         }
