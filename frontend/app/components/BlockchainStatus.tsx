@@ -22,7 +22,7 @@ const BlockchainStatus = () => {
 
         const unwatch = publicClient.watchBlocks({
             onBlock: (block) => {
-                console.log(block); 
+                console.log("BlockchainStatus-watchBlocks", block);
                 setIsBlockchainAccessible(true);
             },
             onError: (error) => {
@@ -30,15 +30,15 @@ const BlockchainStatus = () => {
                 setIsBlockchainAccessible(false);
             }
         });
-        
+
         const interval = setInterval(checkBlockchainStatus, 60000);
-    
+
         return () => {
             unwatch();
             clearInterval(interval);
-        };    
+        };
     }, []);
-    
+
 
     if (!isBlockchainAccessible) {
         return (
@@ -49,7 +49,8 @@ const BlockchainStatus = () => {
                     <Text p='1'>Please check your internet connection and try again. The blockchain may be offline.</Text>
                 </Alert>
             </Box>
-        )};
+        )
+    };
     return null;
 }
 

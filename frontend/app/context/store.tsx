@@ -15,9 +15,10 @@ type globalContextType = {
 	refetchWorkflowStatus: () => void;
 	isOwner: boolean;
 	isVoter: boolean;
+	voterInfo: Voter;
+	refetchVoterInfo: () => void;
 	events: Event[];
 	getEvents: () => void;
-	refetchVoterInfo: () => void;
 	proposals: Proposal[];
 	proposalId: number;
 	refetchProposalId: () => void;
@@ -28,9 +29,10 @@ const globalContextDefaultValues: globalContextType = {
 	refetchWorkflowStatus: () => { },
 	isOwner: false,
 	isVoter: false,
+	voterInfo: {} as Voter,
+	refetchVoterInfo: () => { },
 	events: [],
 	getEvents: () => { },
-	refetchVoterInfo: () => { },
 	proposals: [],
 	proposalId: 0,
 	refetchProposalId: () => { },
@@ -45,9 +47,7 @@ type Props = {
 };
 
 export const GlobalContextProvider = ({ children }: Props) => {
-	const [isBlockchainAccessible, setIsBlockchainAccessible] = useState(true);
 	const { address } = useAccount();
-	const [proposals, setProposals] = useState<Proposal[]>([]);
 
 	// --- read and refetch workflowStatusStep, ownerAddress, voterInfo
 	//
@@ -85,7 +85,6 @@ export const GlobalContextProvider = ({ children }: Props) => {
 	});
 
 	const isVoter = (voterInfo as Voter)?.isRegistered === true;
-
 
 	// --- read and refetch proposals //
 
@@ -210,9 +209,10 @@ export const GlobalContextProvider = ({ children }: Props) => {
 		refetchWorkflowStatus: refetchWorkflowStatus,
 		isOwner: address === ownerAddress,
 		isVoter: isVoter,
+		voterInfo,
+		refetchVoterInfo,
 		events: events,
 		getEvents: getEvents,
-		refetchVoterInfo,
 		proposals: allProposals as Proposal[],
 		proposalId,
 		refetchAllProposals: refetchAllProposals,

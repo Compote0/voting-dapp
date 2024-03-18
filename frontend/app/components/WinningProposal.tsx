@@ -3,8 +3,11 @@ import MemeImage, { MemeImageType } from "./MemeImage";
 import { useReadContract, useAccount } from "wagmi";
 import { contractAddress, contractAbi } from "@/app/constants";
 import Confetti from 'react-confetti';
+import VotingStatus from "./VotingStatus";
+import { useGlobalContext } from '../context/store';
 
 export const WinningProposal = () => {
+  const { isVoter } = useGlobalContext();
   const memeImageData: MemeImageType = {
     src: 'https://media1.tenor.com/m/AVKXBs5934YAAAAd/dumbledore-clapping.gif',
     alt: 'dumbledore-clapping',
@@ -12,10 +15,8 @@ export const WinningProposal = () => {
     description: "Dumbledore Clapping GIF from Dumbledore GIFs"
   };
 
-  const confettiWidth = 500, confettiHeigh = 500;
-
+  // read winningProposalID on contract
   const { address } = useAccount();
-
   const {
     data: winningProposalID,
   } = useReadContract({
@@ -25,24 +26,35 @@ export const WinningProposal = () => {
     account: address,
   });
 
+  // display confetti
+  const displayConfetti = () => {
+    const confettiWidth = 500, confettiHeigh = 500;
+
+    return (<Confetti
+      width={confettiWidth}
+      height={confettiHeigh}
+      recycle={false}
+      confettiSource={{
+        w: 10,
+        h: 10,
+        x: confettiWidth / 2,
+        y: confettiHeigh / 2,
+      }}
+    />)
+  }
+
   return (
     <>
       <Heading color='#D0CEBA' mb={4}>The winner is 🥁</Heading>
-      <Confetti
-        width={confettiWidth}
-        height={confettiHeigh}
-        recycle={false}
-        confettiSource={{
-          w: 10,
-          h: 10,
-          x: confettiWidth / 2,
-          y: confettiHeigh / 2,
-        }}
-      />
-      <Text color='#E9D2C0' mb={4}>The proposal number <Tag>{winningProposalID?.toString()}</Tag></Text>
-      <Box boxSize='sm' mt={8}>
-        <MemeImage memeImageData={memeImageData} />
-      </Box>
+      {displayConfetti()}
+      <Text color='#E9D2C0' mb={4}>The proposal number <Tag>{(Number(winningProposalID) + 1).toString()}</Tag></Text>
+      {isVoter ? (
+        <VotingStatus canVote={false} />
+      ) : (
+        <Box boxSize='sm' mt={8}>
+          <MemeImage memeImageData={memeImageData} />
+        </Box>
+      )}
     </>
   );
 };
