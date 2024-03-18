@@ -40,6 +40,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - [Manage nextjs context in typescript](https://dev.to/shareef/context-api-with-typescript-and-next-js-2m25)
 - [Confetti](https://www.npmjs.com/package/react-confetti)
 
+## Variable d'environnement
+
+- NEXT_PUBLIC_WALLETCONNECT_PROJECTID
+- NEXT_PUBLIC_DEPLOYED_BLOCKNUMBER
+- NEXT_PUBLIC_CONTRACT_ADDRESS
+- NEXT_PUBLIC_SEPOLIA_RPC_URL
+
 ## React structure
 
 - WagmiProvider
@@ -58,6 +65,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
                     - RegisterProposal
                     - StartVoting
                     - VotingSession
+                      - VotingStatus
+                        - Proposals
+                        - SearchVoter
                     - EndVoting
                     - WinningProposal
                   - Events

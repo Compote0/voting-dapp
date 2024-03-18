@@ -2,12 +2,12 @@
 
 ## Pour correction :
 
-// Lien vidéo (durée 3 min 07 sec, vous pouvez la regarder en 1.2x, cela vous fera donc 2 min 35sec : 
-https://www.loom.com/share/0612121444484927a82d6c9ebe39d3eb  
+Lien vidéo (durée 3 min 07 sec, vous pouvez la regarder en 1.2x, cela vous fera donc 2 min 35sec :
+https://www.loom.com/share/0612121444484927a82d6c9ebe39d3eb
 
-// Lien Déploiement: https://voting-dapp-ten-blush.vercel.app
+Lien Déploiement: https://voting-dapp-ten-blush.vercel.app
 
-// Déployé sur sépolia
+Déployé sur sépolia
 
 Groupe constitué de :  
 Léo-Paul MARTIN et  
@@ -24,7 +24,6 @@ Niveaux bonnes pratiques nous avons fait ceci:
 - overall
   - bon partage des taches (contrat test, frontend voting step)
   - frontend et backend en typescript
-    
 - backend
   - backend scripts
     - deployer contrat
@@ -34,7 +33,6 @@ Niveaux bonnes pratiques nous avons fait ceci:
     - automatiser la demo
   - backend script dans le package.json pour run les commandes hardhat (compile, test, coverage, node, deploy, proposal, reset)
   - backend test coverage 100% statement, branches, functions and lines, utilisation de fixture et loadFixture partout
-    
 - frontend
   - react context
   - message d'alerte quand blockchain down/contract not deployed ou mauvais contrat target
@@ -56,4 +54,3 @@ Voici la liste de la stack utilisée pour la réalisation du projet
 - RainbowKit v2
 - Viem
 - Wagmi
-
